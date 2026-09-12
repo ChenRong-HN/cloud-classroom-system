@@ -5,6 +5,9 @@ import com.yanque.exp.BusinessException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * 自定义全局异常处理器
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
