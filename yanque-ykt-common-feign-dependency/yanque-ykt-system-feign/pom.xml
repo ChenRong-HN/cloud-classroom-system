@@ -8,7 +8,7 @@
         <artifactId>yanque-ykt-common-feign-dependency</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
+    <packaging>jar</packaging>
     <artifactId>yanque-ykt-system-feign</artifactId>
 
     <properties>

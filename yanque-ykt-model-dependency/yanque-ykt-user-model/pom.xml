@@ -8,7 +8,7 @@
         <artifactId>yanque-ykt-model-dependency</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
+    <packaging>jar</packaging>
     <artifactId>yanque-ykt-user-model</artifactId>
 
     <properties>
