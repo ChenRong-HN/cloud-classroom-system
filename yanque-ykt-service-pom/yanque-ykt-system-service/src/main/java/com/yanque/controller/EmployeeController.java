@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import com.yanque.entity.Employee;
 import com.yanque.service.IEmployeeService;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -67,7 +68,7 @@ public class EmployeeController {
      */
     @Operation(summary = "新增员工信息", description = "新增员工信息信息")
     @PostMapping
-    public ApiResponse<Void> save(@RequestBody Employee employee) {
+    public ApiResponse<Void> save(@Valid @RequestBody Employee employee) {
         // 调用员工信息服务层接口保存员工信息信息
         employeeService.save(employee);
         return ApiResponse.success();

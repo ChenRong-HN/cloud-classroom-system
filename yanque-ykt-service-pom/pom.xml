@@ -59,6 +59,17 @@
             <artifactId>swagger-annotations-jakarta</artifactId>
             <version>2.2.22</version>
         </dependency>
+        <!-- Hibernate Validator参数校验依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <!-- 全局通用工具类、实体类依赖 -->
+        <dependency>
+            <groupId>com.yanque</groupId>
+            <artifactId>yanque-ykt-common-tool-dependency</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

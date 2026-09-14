@@ -18,10 +18,9 @@
     </properties>
 
     <dependencies>
-        <!-- 全局通用工具类、实体类依赖 -->
         <dependency>
             <groupId>com.yanque</groupId>
-            <artifactId>yanque-ykt-common-tool-dependency</artifactId>
+            <artifactId>yanque-ykt-system-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!-- SpringBoot Web依赖 -->
