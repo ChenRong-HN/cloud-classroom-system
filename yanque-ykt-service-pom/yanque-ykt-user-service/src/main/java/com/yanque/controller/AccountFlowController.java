@@ -6,7 +6,7 @@ import com.yanque.common.vo.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.common.AccountFlow;
+import com.yanque.entity.AccountFlow;
 import com.yanque.service.IAccountFlowService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "会员账户流水管理", description = "会员账户流水接口")
 @RestController
-@RequestMapping("/user/flow")
+@RequestMapping("/user/accountFlow")
 public class AccountFlowController {
 
     // 注入会员账户流水服务层接口实现类

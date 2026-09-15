@@ -8,7 +8,7 @@ import com.yanque.common.vo.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.common.Employee;
+import com.yanque.entity.Employee;
 import com.yanque.service.IEmployeeService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;

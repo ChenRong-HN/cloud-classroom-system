@@ -6,7 +6,7 @@ import com.yanque.common.vo.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.common.SystemDictionaryItem;
+import com.yanque.entity.SystemDictionaryItem;
 import com.yanque.service.ISystemDictionaryItemService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;

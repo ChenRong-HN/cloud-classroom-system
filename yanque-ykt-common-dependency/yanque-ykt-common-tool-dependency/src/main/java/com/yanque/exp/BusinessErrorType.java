@@ -16,7 +16,11 @@ public enum BusinessErrorType {
     USER_NOT_EXISTS(502, "用户不存在"),
     PASSWORD_ERROR(503, "用户登录密码错误"),
     MAIL_SEND_COUNT_GT3(505, "今日发送邮件次数已超过限制"),
-    MAIL_LAST_SEND_IN_1MIN(506, "邮件发送间隔不能小于1分钟");
+    MAIL_LAST_SEND_IN_1MIN(506, "邮件发送间隔不能小于1分钟"),
+    USER_ACCOUNT_EXISTS(507,"用户已存在"),
+    EMAIL_VALIDATE_CODE_EXPIRED(508,"验证码已过期"),
+    EMAIL_VALIDATE_CODE_ERROR(509,"验证码有误，请重新输入"),
+    REMOTE_SERVICE_ERROR(510, "远程服务调用错误");
 
     // 状态码
     private final Integer code;

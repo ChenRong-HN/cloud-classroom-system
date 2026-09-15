@@ -6,7 +6,7 @@ import com.yanque.common.vo.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.common.UserBaseInfo;
+import com.yanque.entity.UserBaseInfo;
 import com.yanque.service.IUserBaseInfoService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "会员基本信息管理", description = "会员基本信息接口")
 @RestController
-@RequestMapping("/user/info")
+@RequestMapping("/user/baseInfo")
 public class UserBaseInfoController {
 
     // 注入会员基本信息服务层接口实现类

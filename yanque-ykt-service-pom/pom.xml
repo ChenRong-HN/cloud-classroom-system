@@ -16,6 +16,7 @@
         <module>yanque-ykt-uaa-service</module>
         <module>yanque-ykt-user-service</module>
         <module>yanque-ykt-common-service</module>
+        <module>yanque-ykt-course-service</module>
     </modules>
 
     <properties>
@@ -57,5 +58,11 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

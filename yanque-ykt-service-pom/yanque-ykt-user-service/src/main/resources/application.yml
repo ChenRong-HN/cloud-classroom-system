@@ -4,6 +4,12 @@ spring:
   cloud:
     nacos:
       server-addr: 192.168.8.5:8848 # Nacos服务注册地址
+  data:
+    redis:
+      host: 192.168.8.5 # Redis服务地址
+      port: 6379 # Redis服务端口
+      database: 0 # Redis默认访问数据库
+      password: yanque-17 # Redis访问密码
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.8.5:3306/yanque_ykt_user?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
@@ -18,7 +24,7 @@ spring:
       time-between-eviction-runs-millis: 60000 # 连接池检测时间间隔
       min-evictable-idle-time-millis: 300000   # 连接池最小空闲时间
 server:
-  port: 10040 # 默认端口
+  port: 10030 # 默认端口
 
 mybatis-plus:
   global-config:
@@ -31,6 +37,27 @@ mybatis-plus:
     cache-enabled: false # 关闭二级缓存(避免出现数据不可读问题)
   mapper-locations: classpath*:/mapper/**/*.xml # Mapper文件扫描路径
   type-aliases-package: com.yanque.entity # 实体类别名扫描路径
+
+seata:
+  enabled: true # 开启Seata事务
+  tx-service-group: yanque-ykt-seata # 事务组名称
+  service:
+    vgroup-mapping:
+      yanque-ykt-seata: default # 事务组到集群的映射
+  registry:
+    type: nacos # 声明Nacos注册中心地址
+    nacos:
+      server-addr: 192.168.8.5:8848
+      group: DEFAULT_GROUP
+      cluster: default
+      application: seata-server
+  config:
+    type: nacos # 基于Nacos拉取seataServer.properties
+    nacos:
+      server-addr: 192.168.8.5:8848
+      group: DEFAULT_GROUP
+      data-id: seataServer.properties
+  data-source-proxy-mode: AT # AT模式
 
 springdoc:
   api-docs:

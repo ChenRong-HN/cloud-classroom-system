@@ -3,7 +3,7 @@ package com.yanque.service.impl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.yanque.mapper.RoleMapper;
-import com.yanque.common.Role;
+import com.yanque.entity.Role;
 import com.yanque.service.IRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 

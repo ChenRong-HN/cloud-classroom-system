@@ -6,7 +6,7 @@ import com.yanque.common.vo.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.common.Login;
+import com.yanque.entity.Login;
 import com.yanque.service.ILoginService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,10 +67,11 @@ public class LoginController {
      */
     @Operation(summary = "新增登录数据", description = "新增登录数据信息")
     @PostMapping
-    public ApiResponse<Void> save(@RequestBody Login login) {
+    public ApiResponse<Long> save(@RequestBody Login login) {
         // 调用登录数据服务层接口保存登录数据信息
         loginService.save(login);
-        return ApiResponse.success();
+        // 数据回显：数据添加成功后，数据库给出默认id，回传到user对象中，因此能获取到id
+        return ApiResponse.success(login.getId());
     }
 
     /**

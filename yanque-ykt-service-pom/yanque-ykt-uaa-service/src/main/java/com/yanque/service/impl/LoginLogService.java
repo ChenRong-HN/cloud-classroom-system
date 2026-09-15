@@ -3,7 +3,7 @@ package com.yanque.service.impl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.yanque.mapper.LoginLogMapper;
-import com.yanque.common.LoginLog;
+import com.yanque.entity.LoginLog;
 import com.yanque.service.ILoginLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 

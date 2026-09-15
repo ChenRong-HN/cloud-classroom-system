@@ -15,6 +15,7 @@
         <module>yanque-ykt-system-model</module>
         <module>yanque-ykt-uaa-model</module>
         <module>yanque-ykt-user-model</module>
+        <module>yanque-ykt-course-model</module>
     </modules>
 
     <properties>

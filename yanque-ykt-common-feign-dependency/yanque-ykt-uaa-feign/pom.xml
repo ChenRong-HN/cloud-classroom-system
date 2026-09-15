@@ -17,4 +17,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <!-- Uaa统一认证服务模型依赖-->
+        <dependency>
+            <groupId>com.yanque</groupId>
+            <artifactId>yanque-ykt-uaa-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- 全局通用依赖 -->
+        <dependency>
+            <groupId>com.yanque</groupId>
+            <artifactId>yanque-ykt-common-tool-dependency</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 </project>

@@ -36,6 +36,6 @@ public class Knife4jConfiguration {
                         .title("燕雀云课堂 - 系统管理服务 API")   // 文档标题
                         .version("1.0.0")                       // 文档版本
                         .description("燕雀教育云课堂后台管理系统接口文档") // 文档描述
-                        .contact(new Contact().name("x1angwan"))); // 联系人信息
+                        .contact(new Contact().name("cr"))); // 联系人信息
     }
 }

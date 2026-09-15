@@ -3,12 +3,14 @@ package com.yanque.controller;
 import java.util.List;
 
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.entity.vo.UserReqVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.common.User;
+import com.yanque.entity.User;
 import com.yanque.service.IUserService;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,7 +40,7 @@ public class UserController {
      * @return 全局通用返回结果(会员登录账号所有数据})
      */
     @Operation(summary = "查询会员登录账号列表", description = "查询所有会员登录账号信息列表")
-    @GetMapping("/list" )
+    @GetMapping("/list")
     public ApiResponse<List<User>> list() {
         // 调用会员登录账号服务层接口查询所有会员登录账号信息
         List<User> list = userService.list();
@@ -52,7 +54,7 @@ public class UserController {
      * @return 全局通用返回结果(会员登录账号实体数据)
      */
     @Operation(summary = "根据Id查询会员登录账号", description = "根据主键Id查询会员登录账号详细信息")
-    @GetMapping("/{id}" )
+    @GetMapping("/{id}")
     public ApiResponse<User> getById(@Parameter(description = "会员登录账号Id") @PathVariable("id") Long id) {
         // 调用会员登录账号服务层接口根据Id查询会员登录账号信息
         User entity = userService.getById(id);
@@ -94,10 +96,23 @@ public class UserController {
      * @return 全局通用返回结果
      */
     @Operation(summary = "删除会员登录账号", description = "根据Id删除会员登录账号信息")
-    @DeleteMapping("/{id}" )
+    @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@Parameter(description = "会员登录账号Id") @PathVariable("id") Long id) {
         // 调用会员登录账号服务层接口根据Id删除会员登录账号信息
         userService.removeById(id);
+        return ApiResponse.success();
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param userReqVo 用户注册信息
+     * @return 全局统一返回结果
+     */
+    @Operation(summary = "用户注册", description = "用户注册")
+    @PostMapping("/register")
+    public ApiResponse<Void> register(@Valid @RequestBody UserReqVo userReqVo) {
+        userService.register(userReqVo);
         return ApiResponse.success();
     }
 }

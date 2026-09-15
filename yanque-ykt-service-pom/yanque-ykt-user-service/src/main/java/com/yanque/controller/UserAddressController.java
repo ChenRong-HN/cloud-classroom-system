@@ -6,7 +6,7 @@ import com.yanque.common.vo.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.common.UserAddress;
+import com.yanque.entity.UserAddress;
 import com.yanque.service.IUserAddressService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -15,6 +15,8 @@ public class ApiResponse<T> {
     private String message;
     // 响应数据
     private T data;
+    // 响应结果
+    private Boolean success;
 
     /**
      * 快速获取一个带有返回数据的表示成功的返回结果
@@ -28,6 +30,7 @@ public class ApiResponse<T> {
         r.setCode(200);
         r.setMessage("操作成功");
         r.setData(data);
+        r.setSuccess(true);
         return r;
     }
 
@@ -40,6 +43,7 @@ public class ApiResponse<T> {
         ApiResponse<Void> r = new ApiResponse<>();
         r.setCode(200);
         r.setMessage("操作成功");
+        r.setSuccess(true);
         return r;
     }
 
@@ -64,6 +68,7 @@ public class ApiResponse<T> {
         ApiResponse<Void> r = new ApiResponse<>();
         r.setCode(code);
         r.setMessage(message);
+        r.setSuccess(false);
         return r;
     }
 }

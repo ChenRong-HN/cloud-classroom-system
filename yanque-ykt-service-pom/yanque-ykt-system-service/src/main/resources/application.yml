@@ -4,6 +4,12 @@ spring:
   cloud:
     nacos:
       server-addr: 192.168.8.5:8848 # Nacos服务注册地址
+  data:
+    redis:
+      host: 192.168.8.5 # Redis服务地址
+      port: 6379 # Redis服务端口
+      database: 0 # Redis默认访问数据库
+      password: yanque-17 # Redis访问密码
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.8.5:3306/yanque_ykt_system?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai

@@ -1,0 +1,73 @@
+spring:
+  application:
+    name: yanque-ykt-course-service # 项目名称
+  cloud:
+    nacos:
+      server-addr: 192.168.8.5:8848 # Nacos服务注册地址
+  data:
+    redis:
+      host: 192.168.8.5 # Redis服务地址
+      port: 6379 # Redis服务端口
+      database: 0 # Redis默认访问数据库
+      password: yanque-17 # Redis访问密码
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.8.5:3306/yanque_ykt_course?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: yanque-ykt-17
+    type: com.alibaba.druid.pool.DruidDataSource # 数据源类型
+    druid:
+      initial-size: 5        # 连接池初始化后构建5个连接
+      min-idle: 5            # 连接池最小空闲连接数
+      max-active: 20         # 连接池最大连接数
+      max-wait: 60000        # 获取连接最大等待时间
+      time-between-eviction-runs-millis: 60000 # 连接池检测时间间隔
+      min-evictable-idle-time-millis: 300000   # 连接池最小空闲时间
+server:
+  port: 10050 # 默认端口
+
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: t_   # 默认表前缀
+      id-type: auto      # 默认主键生成策略
+  configuration:
+    map-underscore-to-camel-case: true # 开启下划线转驼峰
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 日志实现
+    cache-enabled: false # 关闭二级缓存(避免出现数据不可读问题)
+  mapper-locations: classpath*:/mapper/**/*.xml # Mapper文件扫描路径
+  type-aliases-package: com.yanque.entity # 实体类别名扫描路径
+
+seata:
+  enabled: true # 开启Seata事务
+  tx-service-group: yanque-ykt-seata # 事务组名称
+  service:
+    vgroup-mapping:
+      yanque-ykt-seata: default # 事务组到集群的映射
+  registry:
+    type: nacos # 声明Nacos注册中心地址
+    nacos:
+      server-addr: 192.168.8.5:8848
+      group: DEFAULT_GROUP
+      cluster: default
+      application: seata-server
+  config:
+    type: nacos # 基于Nacos拉取seataServer.properties
+    nacos:
+      server-addr: 192.168.8.5:8848
+      group: DEFAULT_GROUP
+      data-id: seataServer.properties
+  data-source-proxy-mode: AT # AT模式
+
+springdoc:
+  api-docs:
+    enabled: true       # 开启文档生成
+    path: /v3/api-docs  # 元数据版本声明
+  swagger-ui:
+    enabled: true       # 开启原始SwaggerUI渲染
+knife4j:
+  enable: true          # 开启Knife4j增强模式(支持中文)
+  setting:
+    language: zh_cn               # 中文支持
+    enable-swagger-models: true   # 显示实体类列表
+    enable-document-manage: true  # 开启离线管理文档

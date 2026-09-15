@@ -3,7 +3,7 @@ package com.yanque.service.impl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.yanque.mapper.PermissionMapper;
-import com.yanque.common.Permission;
+import com.yanque.entity.Permission;
 import com.yanque.service.IPermissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 

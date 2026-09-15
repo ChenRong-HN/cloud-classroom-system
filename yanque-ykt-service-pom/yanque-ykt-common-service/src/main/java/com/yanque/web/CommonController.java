@@ -41,7 +41,7 @@ public class CommonController {
     public ApiResponse<Void> sendEmailRegisterVerifyCode(@PathVariable String targetEmail) {
         // 判断今日邮件发送次数
         String sendCountKey = RedisConstant.MAIL_TODAY_SEND_COUNT_KEY.replace("{today}",
-                LocalDateTimeUtil.format(LocalDate.now(), "yyyy-MM-dd"));
+                LocalDateTimeUtil.format(LocalDate.now(), "yyyy-MM-dd")).concat(targetEmail);
         Integer sendCountValue = (Integer) redisTemplate.opsForValue().get(sendCountKey);
 
         // 若今日发送次数低于3次
@@ -52,14 +52,14 @@ public class CommonController {
             } else {
                 // 记录本次发送邮件的标志
                 // 唯一的作用：通过尝试获取判断是否为null判断是否过期
-                redisTemplate.opsForValue().set(RedisConstant.MAIL_LAST_SEND_FLAG_KEY.concat(targetEmail), System.currentTimeMillis());
+                redisTemplate.opsForValue().set(RedisConstant.MAIL_LAST_SEND_FLAG_KEY.concat(targetEmail), System.currentTimeMillis(), 1, TimeUnit.MINUTES);
                 // 记录今日发送次数
-                if (ObjUtil.isNull(redisTemplate.opsForValue().get(RedisConstant.MAIL_TODAY_SEND_COUNT_KEY.concat(targetEmail)))) {
+                if (ObjUtil.isNull(redisTemplate.opsForValue().get(sendCountKey))) {
                     // 今日第一次发送
-                    redisTemplate.opsForValue().set(sendCountKey.concat(targetEmail), 1);
+                    redisTemplate.opsForValue().set(sendCountKey, 1);
                 } else {
                     // 不是今日第一次发送，则value自增
-                    redisTemplate.opsForValue().increment(sendCountKey.concat(targetEmail));
+                    redisTemplate.opsForValue().increment(sendCountKey);
                 }
                 // 发送验证码
                 String validateCode = mailTool.sendRegistryValidateCodeMail(targetEmail);
