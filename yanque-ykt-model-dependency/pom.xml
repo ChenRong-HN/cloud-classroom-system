@@ -24,10 +24,23 @@
     </properties>
 
     <dependencies>
-        <!-- Hibernate Validator参数校验依赖 -->
+        <!-- Swagger注解依赖包(最小化引入) -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations-jakarta</artifactId>
+            <version>2.2.22</version>
+        </dependency>
+        <!-- Hibernate Validator校验规则依赖 -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>8.0.1.Final</version>
+        </dependency>
+        <!-- 添加全局通用依赖(工具类、实体类) -->
+        <dependency>
+            <groupId>com.yanque</groupId>
+            <artifactId>yanque-ykt-common-tool-dependency</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

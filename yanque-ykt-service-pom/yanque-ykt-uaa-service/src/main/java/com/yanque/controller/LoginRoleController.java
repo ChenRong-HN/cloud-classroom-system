@@ -2,11 +2,11 @@ package com.yanque.controller;
 
 import java.util.List;
 
-import com.yanque.entity.vo.ApiResponse;
+import com.yanque.common.vo.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.entity.LoginRole;
+import com.yanque.common.LoginRole;
 import com.yanque.service.ILoginRoleService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "用户角色中间管理", description = "用户角色中间接口")
 @RestController
-@RequestMapping("/uaa/role")
+@RequestMapping("/uaa/loginRole")
 public class LoginRoleController {
 
     // 注入用户角色中间服务层接口实现类

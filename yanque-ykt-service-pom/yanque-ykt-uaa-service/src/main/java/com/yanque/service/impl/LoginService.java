@@ -1,11 +1,9 @@
 package com.yanque.service.impl;
 
-import java.util.List;
-
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.yanque.mapper.LoginMapper;
-import com.yanque.entity.Login;
+import com.yanque.common.Login;
 import com.yanque.service.ILoginService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 

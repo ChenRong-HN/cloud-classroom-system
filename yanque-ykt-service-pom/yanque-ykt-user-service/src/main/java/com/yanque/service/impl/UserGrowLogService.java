@@ -3,7 +3,7 @@ package com.yanque.service.impl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.yanque.mapper.UserGrowLogMapper;
-import com.yanque.entity.UserGrowLog;
+import com.yanque.common.UserGrowLog;
 import com.yanque.service.IUserGrowLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 

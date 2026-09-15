@@ -3,7 +3,7 @@ package com.yanque.service.impl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.yanque.mapper.UserMapper;
-import com.yanque.entity.User;
+import com.yanque.common.User;
 import com.yanque.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 

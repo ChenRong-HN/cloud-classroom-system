@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 会员账户信息持久层接口Mapper映射文件 -->
+<mapper namespace="com.yanque.mapper.UserAccountMapper">
+
+</mapper>

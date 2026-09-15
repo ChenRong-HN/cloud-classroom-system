@@ -3,7 +3,7 @@ package com.yanque.service.impl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.yanque.mapper.DepartmentMapper;
-import com.yanque.entity.Department;
+import com.yanque.common.Department;
 import com.yanque.service.IDepartmentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 

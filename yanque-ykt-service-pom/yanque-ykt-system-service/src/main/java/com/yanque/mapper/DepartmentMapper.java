@@ -1,6 +1,6 @@
 package com.yanque.mapper;
 
-import com.yanque.entity.Department;
+import com.yanque.common.Department;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

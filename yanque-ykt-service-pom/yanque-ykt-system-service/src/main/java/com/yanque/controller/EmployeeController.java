@@ -2,14 +2,18 @@ package com.yanque.controller;
 
 import java.util.List;
 
-import com.yanque.entity.vo.ApiResponse;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.yanque.common.vo.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.entity.Employee;
+import com.yanque.common.Employee;
 import com.yanque.service.IEmployeeService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -100,5 +104,21 @@ public class EmployeeController {
         // 调用员工信息服务层接口根据Id删除员工信息信息
         employeeService.removeById(id);
         return ApiResponse.success();
+    }
+
+    /**
+     * 根据状态查询员工信息
+     *
+     * @param state 员工信息状态
+     * @return 全局通用返回结果(员工信息实体数据)
+     */
+    @Operation(summary = "根据状态查询员工信息", description = "根据状态查询员工信息列表")
+    @GetMapping("/selectByState/{state}")
+    public ApiResponse<List<Employee>> selectByState(@PathVariable @Min(value = 0, message = "员工信息状态非法") @Max(value = 2, message = "员工信息状态非法")
+                                                     @Parameter(description = "员工信息状态") Long state) {
+        // 封装查询条件后查询员工数据
+        LambdaQueryWrapper<Employee> employeeLambdaQueryWrapper = Wrappers.<Employee>lambdaQuery().eq(Employee::getState, state);
+        List<Employee> list = employeeService.list(employeeLambdaQueryWrapper);
+        return ApiResponse.success(list);
     }
 }

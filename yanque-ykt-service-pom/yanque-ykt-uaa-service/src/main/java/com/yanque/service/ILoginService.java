@@ -1,6 +1,6 @@
 package com.yanque.service;
 
-import com.yanque.entity.Login;
+import com.yanque.common.Login;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

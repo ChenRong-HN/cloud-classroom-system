@@ -1,6 +1,6 @@
 package com.yanque.service;
 
-import com.yanque.entity.RolePermission;
+import com.yanque.common.RolePermission;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

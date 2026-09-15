@@ -3,7 +3,7 @@ package com.yanque.service.impl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.yanque.mapper.SystemDictionaryItemMapper;
-import com.yanque.entity.SystemDictionaryItem;
+import com.yanque.common.SystemDictionaryItem;
 import com.yanque.service.ISystemDictionaryItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 

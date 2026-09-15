@@ -2,11 +2,11 @@ package com.yanque.controller;
 
 import java.util.List;
 
-import com.yanque.entity.vo.ApiResponse;
+import com.yanque.common.vo.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.entity.Config;
+import com.yanque.common.Config;
 import com.yanque.service.IConfigService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;

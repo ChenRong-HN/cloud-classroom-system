@@ -1,11 +1,9 @@
 package com.yanque.service.impl;
 
-import java.util.List;
-
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.yanque.mapper.RolePermissionMapper;
-import com.yanque.entity.RolePermission;
+import com.yanque.common.RolePermission;
 import com.yanque.service.IRolePermissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 

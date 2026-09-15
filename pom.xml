@@ -75,9 +75,13 @@
 
     <build>
         <plugins>
+            <!-- SpringBoot打包插件：默认关闭repackage，避免无启动类的库模块打包报错并产生空jar -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>

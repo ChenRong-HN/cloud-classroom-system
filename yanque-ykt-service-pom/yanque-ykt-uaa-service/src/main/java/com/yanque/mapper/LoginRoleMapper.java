@@ -1,8 +1,6 @@
 package com.yanque.mapper;
 
-import java.util.List;
-
-import com.yanque.entity.LoginRole;
+import com.yanque.common.LoginRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

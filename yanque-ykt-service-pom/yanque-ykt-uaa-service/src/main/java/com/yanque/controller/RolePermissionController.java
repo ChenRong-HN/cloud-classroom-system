@@ -2,11 +2,11 @@ package com.yanque.controller;
 
 import java.util.List;
 
-import com.yanque.entity.vo.ApiResponse;
+import com.yanque.common.vo.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.yanque.entity.RolePermission;
+import com.yanque.common.RolePermission;
 import com.yanque.service.IRolePermissionService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "角色权限管理", description = "角色权限接口")
 @RestController
-@RequestMapping("/uaa/permission")
+@RequestMapping("/uaa/rolePermission")
 public class RolePermissionController {
 
     // 注入角色权限服务层接口实现类

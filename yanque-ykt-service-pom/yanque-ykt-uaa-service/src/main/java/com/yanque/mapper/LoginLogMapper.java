@@ -1,8 +1,6 @@
 package com.yanque.mapper;
 
-import java.util.List;
-
-import com.yanque.entity.LoginLog;
+import com.yanque.common.LoginLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

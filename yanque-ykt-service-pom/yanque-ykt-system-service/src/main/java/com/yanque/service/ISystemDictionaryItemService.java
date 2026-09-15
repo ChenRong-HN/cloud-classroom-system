@@ -1,6 +1,6 @@
 package com.yanque.service;
 
-import com.yanque.entity.SystemDictionaryItem;
+import com.yanque.common.SystemDictionaryItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

@@ -11,8 +11,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum BusinessErrorType {
-    USER_NOT_FOUND(501, "用户不存在"),
-    USERNAME_IS_NULL(502, "用户名不能为空");
+    // 表示当前业务中不同错误信息的枚举项
+    USER_NOT_LOGIN(501, "用户当前处于未登录状态"),
+    USER_NOT_EXISTS(502, "用户不存在"),
+    PASSWORD_ERROR(503, "用户登录密码错误"),
+    MAIL_SEND_COUNT_GT3(505, "今日发送邮件次数已超过限制"),
+    MAIL_LAST_SEND_IN_1MIN(506, "邮件发送间隔不能小于1分钟");
 
     // 状态码
     private final Integer code;

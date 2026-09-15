@@ -3,7 +3,7 @@ package com.yanque.service.impl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.yanque.mapper.ConfigMapper;
-import com.yanque.entity.Config;
+import com.yanque.common.Config;
 import com.yanque.service.IConfigService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
