@@ -7,14 +7,19 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yanque.common.constant.RedisConstant;
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.entity.CourseType;
 import com.yanque.entity.vo.TreeVo;
 import com.yanque.mapper.CourseTypeMapper;
 import com.yanque.service.ICourseTypeService;
 import jakarta.annotation.Resource;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +38,7 @@ public class CourseTypeService extends ServiceImpl<CourseTypeMapper, CourseType>
     private CourseTypeMapper courseTypeMapper;
 
     @Override
+    @Cacheable(cacheNames = RedisConstant.COURSE_TYPE_TREE_DATA_LIST_KEY, key = "'all'") // 不加单引号则会去匹配参数列表中相同名称的参数值
     public List<TreeVo> selectCourseTypeTreeData() {
         List<CourseType> courseTypes = list();
         List<TreeVo> treeVoList = courseTypes.stream().map(courseType -> TreeVo.builder()
@@ -73,6 +79,9 @@ public class CourseTypeService extends ServiceImpl<CourseTypeMapper, CourseType>
      * @param courseType 课程分类对象
      */
     @Override
+    @Transactional
+    // 更新操作之后删除缓存 allEntries = true:删除当前缓存名称下的所有缓存条目
+    @CacheEvict(cacheNames = RedisConstant.COURSE_TYPE_TREE_DATA_LIST_KEY, allEntries = true)
     public boolean save(CourseType courseType) {
         // 填充数据
         long now = System.currentTimeMillis();
@@ -92,5 +101,29 @@ public class CourseTypeService extends ServiceImpl<CourseTypeMapper, CourseType>
         }
         // 将更新path字段后的对象更新
         return updateById(courseType);
+    }
+
+    /**
+     * 基于Id更新课程分类数据
+     *
+     * @param courseType 课程分类实体对象
+     * @return 是否更新成功
+     */
+    @Override
+    @CacheEvict(cacheNames = RedisConstant.COURSE_TYPE_TREE_DATA_LIST_KEY, allEntries = true)
+    public boolean updateById(CourseType courseType) {
+        return super.updateById(courseType);
+    }
+
+    /**
+     * 基于Id删除课程分类数据
+     *
+     * @param id 课程分类Id
+     * @return 是否删除成功
+     */
+    @Override
+    @CacheEvict(cacheNames = RedisConstant.COURSE_TYPE_TREE_DATA_LIST_KEY, allEntries = true)
+    public boolean removeById(Serializable id) {
+        return super.removeById(id);
     }
 }

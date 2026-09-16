@@ -18,11 +18,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ApiResponse<Void> handleException(BusinessException e){
+        log.error("程序执行过程中出现异常，异常原因：{}",e.getMessage());
         return ApiResponse.error(e.getBusinessErrorType().getCode(),e.getBusinessErrorType().getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     public ApiResponse<Void> handleException(Exception e){
+        log.error("程序执行过程中出现异常，异常原因：{}",e.getMessage());
         return ApiResponse.error("当前系统繁忙，请稍后重试");
     }
 

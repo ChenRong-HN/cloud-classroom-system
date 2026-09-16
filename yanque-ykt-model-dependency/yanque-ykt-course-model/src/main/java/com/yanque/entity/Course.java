@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
  * 课程信息业务层模型实体类
  *
@@ -45,10 +49,10 @@ public class Course {
     private String loginUserName;
     /** 课程开课时间 */
     @Schema(description = "课程开课时间")
-    private Long startTime;
+    private LocalDate startTime;
     /** 课程结课时间 */
     @Schema(description = "课程结课时间")
-    private Long endTime;
+    private LocalDate endTime;
     /** 封面URL地址 */
     @Schema(description = "封面URL地址")
     private String pic;
