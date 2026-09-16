@@ -10,3 +10,8 @@ spring:
       port: 6379 # Redis服务端口
       database: 0 # Redis默认访问数据库
       password: yanque-17 # Redis访问密码
+aliyun: # 阿里云Oss对象存储相关参数
+  oss:
+    endPoint: https://oss-cn-hangzhou.aliyuncs.com
+    bucketName: cr-study
+    region: cn-hangzhou
