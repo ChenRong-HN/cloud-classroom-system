@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "课程销售信息管理", description = "课程销售信息接口")
 @RestController
-@RequestMapping("/course/market")
+@RequestMapping("/course/courseMarket")
 public class CourseMarketController {
 
     // 注入课程销售信息服务层接口实现类

@@ -20,5 +20,5 @@ public class ApiPageResponse<T> {
     // 满足本次查询条件的数据的总条数
     private Long total;
     // 满足本次查询条件的数据列表
-    private List<T> row;
+    private List<T> rows;
 }

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "课程浏览记录管理", description = "课程浏览记录接口")
 @RestController
-@RequestMapping("/course/viewLog")
+@RequestMapping("/course/courseViewLog")
 public class CourseViewLogController {
 
     // 注入课程浏览记录服务层接口实现类

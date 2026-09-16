@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "课程详情管理", description = "课程详情接口")
 @RestController
-@RequestMapping("/course/detail")
+@RequestMapping("/course/courseDetail")
 public class CourseDetailController {
 
     // 注入课程详情服务层接口实现类

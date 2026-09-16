@@ -38,27 +38,6 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml # Mapper文件扫描路径
   type-aliases-package: com.yanque.entity # 实体类别名扫描路径
 
-seata:
-  enabled: true # 开启Seata事务
-  tx-service-group: yanque-ykt-seata # 事务组名称
-  service:
-    vgroup-mapping:
-      yanque-ykt-seata: default # 事务组到集群的映射
-  registry:
-    type: nacos # 声明Nacos注册中心地址
-    nacos:
-      server-addr: 192.168.8.5:8848
-      group: DEFAULT_GROUP
-      cluster: default
-      application: seata-server
-  config:
-    type: nacos # 基于Nacos拉取seataServer.properties
-    nacos:
-      server-addr: 192.168.8.5:8848
-      group: DEFAULT_GROUP
-      data-id: seataServer.properties
-  data-source-proxy-mode: AT # AT模式
-
 springdoc:
   api-docs:
     enabled: true       # 开启文档生成

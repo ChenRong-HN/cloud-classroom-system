@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "用户端课程展示列管理", description = "用户端课程展示列接口")
 @RestController
-@RequestMapping("/course/userShowList")
+@RequestMapping("/course/courseUserShowList")
 public class CourseUserShowListController {
 
     // 注入用户端课程展示列服务层接口实现类

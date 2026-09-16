@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "用户课程学习管理", description = "用户课程学习接口")
 @RestController
-@RequestMapping("/course/userLearn")
+@RequestMapping("/course/courseUserLearn")
 public class CourseUserLearnController {
 
     // 注入用户课程学习服务层接口实现类

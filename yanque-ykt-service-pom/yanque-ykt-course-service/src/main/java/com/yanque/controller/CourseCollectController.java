@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "课程收藏管理", description = "课程收藏接口")
 @RestController
-@RequestMapping("/course/collect")
+@RequestMapping("/course/courseCollect")
 public class CourseCollectController {
 
     // 注入课程收藏服务层接口实现类
