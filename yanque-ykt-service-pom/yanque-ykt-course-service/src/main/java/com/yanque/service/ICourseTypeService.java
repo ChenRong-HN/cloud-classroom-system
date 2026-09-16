@@ -18,4 +18,6 @@ public interface ICourseTypeService extends IService<CourseType> {
     List<TreeVo> selectCourseTypeTreeData();
 
     ApiPageResponse<CourseType> selectPage(Map<String, Object> paramterMap);
+
+    boolean save(CourseType courseType);
 }

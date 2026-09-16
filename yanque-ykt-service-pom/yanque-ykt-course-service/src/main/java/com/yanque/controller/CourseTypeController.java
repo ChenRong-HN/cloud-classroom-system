@@ -69,7 +69,7 @@ public class CourseTypeController {
      * @return 全局通用返回结果
      */
     @Operation(summary = "新增课程分类", description = "新增课程分类信息")
-    @PostMapping
+    @PostMapping("/save")
     public ApiResponse<Void> save(@RequestBody CourseType courseType) {
         // 调用课程分类服务层接口保存课程分类信息
         courseTypeService.save(courseType);

@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
 /**
  * 课程分类业务层模型实体类
  *
@@ -40,4 +43,8 @@ public class CourseType {
     /** 课程分类包含课程数量 */
     @Schema(description = "课程分类包含课程数量")
     private Long totalCount;
+    @Schema(description = "课程分类创建时间")
+    private Long createTime;
+    @Schema(description = "课程分类更新时间")
+    private Long updateTime;
 }
