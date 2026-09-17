@@ -17,6 +17,7 @@
         <module>yanque-ykt-user-service</module>
         <module>yanque-ykt-common-service</module>
         <module>yanque-ykt-course-service</module>
+        <module>yanque-ykt-media-service</module>
     </modules>
 
     <properties>

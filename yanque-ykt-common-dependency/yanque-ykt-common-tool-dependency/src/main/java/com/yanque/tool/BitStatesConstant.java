@@ -3,7 +3,7 @@ package com.yanque.tool;
 /**
  * 用户状态类,记录用户在平台使用系统中所有的状态
  *
- * @author x1angwan
+ * @author cr
  */
 public class BitStatesConstant {
     /**

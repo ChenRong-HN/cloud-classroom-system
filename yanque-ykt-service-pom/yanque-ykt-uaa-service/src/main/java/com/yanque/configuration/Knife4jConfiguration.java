@@ -20,8 +20,8 @@ public class Knife4jConfiguration {
     @Bean
     public GroupedOpenApi systemApi() {
         return GroupedOpenApi.builder()
-                .group("课程管理服务")        // 分组名称
-                .pathsToMatch("/course/**") // 分组默认访问前缀
+                .group("用户认证服务")        // 分组名称
+                .pathsToMatch("/uaa/**") // 分组默认访问前缀
                 .build();
     }
 
@@ -32,9 +32,9 @@ public class Knife4jConfiguration {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("燕雀云课堂 - 课程服务API")   // 文档标题
+                        .title("燕雀云课堂 - 用户认证服务API")   // 文档标题
                         .version("1.0.0")                       // 文档版本
-                        .description("燕雀教育云课堂课程服务接口文档") // 文档描述
-                        .contact(new Contact().name("x1angwan"))); // 联系人信息
+                        .description("燕雀教育云课堂用户认证服务接口文档") // 文档描述
+                        .contact(new Contact().name("cr"))); // 联系人信息
     }
 }
