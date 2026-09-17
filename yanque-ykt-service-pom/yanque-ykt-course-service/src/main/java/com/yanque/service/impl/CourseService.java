@@ -112,6 +112,8 @@ public class CourseService extends ServiceImpl<CourseMapper, Course> implements 
     @Override
     public ApiPageResponse<Course> pageList(Map<String, Object> parameterMap) {
         String key = (String) parameterMap.get("keyword");
+        if (ObjUtil.isNull(parameterMap.get("page")))
+            parameterMap.put("page",1L);
         long page = Long.parseLong(String.valueOf(parameterMap.get("page")));
 
         // 构建分页参数对象

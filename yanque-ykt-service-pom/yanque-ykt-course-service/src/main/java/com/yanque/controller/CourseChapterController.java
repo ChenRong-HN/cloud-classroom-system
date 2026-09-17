@@ -2,7 +2,9 @@ package com.yanque.controller;
 
 import java.util.List;
 
+import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.common.vo.BasicPageVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,7 +40,7 @@ public class CourseChapterController {
      * @return 全局通用返回结果(课程章节所有数据})
      */
     @Operation(summary = "查询课程章节列表", description = "查询所有课程章节信息列表")
-    @GetMapping("/list" )
+    @GetMapping("/list")
     public ApiResponse<List<CourseChapter>> list() {
         // 调用课程章节服务层接口查询所有课程章节信息
         List<CourseChapter> list = courseChapterService.list();
@@ -52,7 +54,7 @@ public class CourseChapterController {
      * @return 全局通用返回结果(课程章节实体数据)
      */
     @Operation(summary = "根据Id查询课程章节", description = "根据主键Id查询课程章节详细信息")
-    @GetMapping("/{id}" )
+    @GetMapping("/{id}")
     public ApiResponse<CourseChapter> getById(@Parameter(description = "课程章节Id") @PathVariable("id") Long id) {
         // 调用课程章节服务层接口根据Id查询课程章节信息
         CourseChapter entity = courseChapterService.getById(id);
@@ -66,7 +68,7 @@ public class CourseChapterController {
      * @return 全局通用返回结果
      */
     @Operation(summary = "新增课程章节", description = "新增课程章节信息")
-    @PostMapping
+    @PostMapping("/save")
     public ApiResponse<Void> save(@RequestBody CourseChapter courseChapter) {
         // 调用课程章节服务层接口保存课程章节信息
         courseChapterService.save(courseChapter);
@@ -94,10 +96,23 @@ public class CourseChapterController {
      * @return 全局通用返回结果
      */
     @Operation(summary = "删除课程章节", description = "根据Id删除课程章节信息")
-    @DeleteMapping("/{id}" )
+    @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@Parameter(description = "课程章节Id") @PathVariable("id") Long id) {
         // 调用课程章节服务层接口根据Id删除课程章节信息
         courseChapterService.removeById(id);
         return ApiResponse.success();
+    }
+
+    /**
+     * 基于条件查询课程章节的分页数据
+     *
+     * @param basicPageVo 基础分页参数模型
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "查询课程章节的分页数据", description = "查询课程章节的分页数据")
+    @PostMapping("/pagelist")
+    public ApiResponse<ApiPageResponse<CourseChapter>> pageList(@RequestBody BasicPageVo basicPageVo) {
+        ApiPageResponse<CourseChapter> pageR = courseChapterService.pageList(basicPageVo);
+        return ApiResponse.success(pageR);
     }
 }

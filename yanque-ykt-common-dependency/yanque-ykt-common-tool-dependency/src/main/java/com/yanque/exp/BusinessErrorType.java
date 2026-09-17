@@ -26,6 +26,10 @@ public enum BusinessErrorType {
     TEACHER_NOT_EXISTS(513, "老师数据不存在"),
     COURSE_TIME_ERROR(514, "课程时间声明错误"),
     ALIYUN_OSS_ERROR(515, "阿里云Oss服务调用异常"),
+    COURSE_CHAPTER_NUMBER_ERROR(516, "课程章节顺序错误"),
+    MEDIA_FILE_NUMBER_ERROR(517, "课程媒体文件顺序错误"),
+    COURSE_NOT_EXISTS(518, "要发布的课程信息数据不存在"),
+    COURSE_CHAPTER_EXISTS(519, "课程章节已存在"),
     ;
 
     // 状态码

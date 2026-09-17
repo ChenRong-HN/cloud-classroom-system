@@ -5,4 +5,7 @@
 <!-- 课程章节持久层接口Mapper映射文件 -->
 <mapper namespace="com.yanque.mapper.CourseChapterMapper">
 
+    <select id="selectMaxChapterNumber" resultType="java.lang.Long">
+        SELECT IFNULL(MAX(number),0) FROM t_course_chapter WHERE course_id = #{courseId}
+    </select>
 </mapper>

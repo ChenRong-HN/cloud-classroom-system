@@ -14,4 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CourseChapterMapper extends BaseMapper<CourseChapter> {
 
+    Long selectMaxChapterNumber(Long courseId);
 }
