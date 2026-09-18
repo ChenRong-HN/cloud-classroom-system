@@ -54,3 +54,9 @@ spring:
             - Path=/ykt/course/** # 路由匹配规则
           filters:
             - StripPrefix=1 # 默认将访问路径中的第一部分截取,只保留后续部分进行转发
+        - id: yanque-ykt-media-service # 路由规则名称
+          uri: lb://yanque-ykt-media-service # 转发目标
+          predicates:
+            - Path=/ykt/media/** # 路由匹配规则
+          filters:
+            - StripPrefix=1 # 默认将访问路径中的第一部分截取,只保留后续部分进行转发

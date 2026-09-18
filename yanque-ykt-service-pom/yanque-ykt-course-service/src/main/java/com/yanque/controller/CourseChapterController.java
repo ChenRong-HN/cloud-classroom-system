@@ -115,4 +115,17 @@ public class CourseChapterController {
         ApiPageResponse<CourseChapter> pageR = courseChapterService.pageList(basicPageVo);
         return ApiResponse.success(pageR);
     }
+
+    /**
+     * 基于课程id查询课程章节数据
+     *
+     * @param courseId 课程id
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "查询课程章节的分页数据", description = "查询课程章节的分页数据")
+    @GetMapping("/listByCourseId/{courseId}")
+    public ApiResponse<List<CourseChapter>> listByCourseId(@PathVariable Long courseId) {
+        List<CourseChapter> courseChapterList = courseChapterService.listByCourseId(courseId);
+        return ApiResponse.success(courseChapterList);
+    }
 }

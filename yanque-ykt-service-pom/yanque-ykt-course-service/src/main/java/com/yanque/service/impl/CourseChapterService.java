@@ -3,6 +3,7 @@ package com.yanque.service.impl;
 import java.util.List;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -33,12 +34,12 @@ public class CourseChapterService extends ServiceImpl<CourseChapterMapper, Cours
 
     @Override
     public boolean save(CourseChapter courseChapter) {
+        // 校验当前章节是否已存在
+        LambdaQueryWrapper<CourseChapter> courseChapterLambdaQueryWrapper = Wrappers.<CourseChapter>lambdaQuery().eq(StrUtil.isNotBlank(courseChapter.getName()), CourseChapter::getName, courseChapter.getName());
+        Assert.equals(courseChapterMapper.selectCount(courseChapterLambdaQueryWrapper), 0L, () -> new BusinessException(BusinessErrorType.COURSE_CHAPTER_EXISTS));
         // 查询当前课程中的最大章节编号
         Long maxChapterNumber = courseChapterMapper.selectMaxChapterNumber(courseChapter.getCourseId());
         Assert.isTrue(courseChapter.getNumber() > maxChapterNumber, () -> new BusinessException(BusinessErrorType.COURSE_CHAPTER_NUMBER_ERROR));
-        LambdaQueryWrapper<CourseChapter> courseChapterLambdaQueryWrapper = Wrappers.<CourseChapter>lambdaQuery().eq(StrUtil.isNotBlank(courseChapter.getName()), CourseChapter::getName, courseChapter.getName());
-        // 校验当前章节是否已存在
-        Assert.equals(courseChapterMapper.selectCount(courseChapterLambdaQueryWrapper), 0L, () -> new BusinessException(BusinessErrorType.COURSE_CHAPTER_EXISTS));
         return super.save(courseChapter);
     }
 
@@ -55,5 +56,12 @@ public class CourseChapterService extends ServiceImpl<CourseChapterMapper, Cours
         // 进行分页查询
         page = page(page, courseChapterLambdaQueryWrapper);
         return ApiPageResponse.<CourseChapter>builder().total(page.getTotal()).rows(page.getRecords()).build();
+    }
+
+    @Override
+    public List<CourseChapter> listByCourseId(Long courseId) {
+        LambdaQueryWrapper<CourseChapter> courseChapterLambdaQueryWrapper = Wrappers.<CourseChapter>lambdaQuery()
+                .eq(ObjUtil.isNotNull(courseId),CourseChapter::getCourseId,courseId);
+        return list(courseChapterLambdaQueryWrapper);
     }
 }

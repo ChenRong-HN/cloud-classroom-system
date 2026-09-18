@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.entity.CourseUserShowList;
 import com.yanque.entity.vo.AddCourseReqVo;
 import com.yanque.entity.vo.TreeVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -114,5 +115,31 @@ public class CourseController {
     public ApiResponse<ApiPageResponse<Course>> pageList(@RequestBody Map<String, Object> parameterMap) {
         ApiPageResponse<Course> pageR = courseService.pageList(parameterMap);
         return ApiResponse.success(pageR);
+    }
+
+    /**
+     * 课程发布/上架
+     *
+     * @param courseIds 课程id集合
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "课程批量上架", description = "课程批量上架")
+    @PostMapping("/batchOnLine")
+    public ApiResponse<Void> batchOnLine(@RequestBody List<Long> courseIds) {
+        courseService.batchOnLine(courseIds);
+        return ApiResponse.success();
+    }
+
+    /**
+     * 课程下架
+     *
+     * @param courseIds 课程id集合
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "课程下架", description = "课程下架")
+    @PostMapping("/offLineCourse")
+    public ApiResponse<Void> offLineCourse(@RequestBody List<Long> courseIds) {
+        courseService.batchDown(courseIds);
+        return ApiResponse.success();
     }
 }

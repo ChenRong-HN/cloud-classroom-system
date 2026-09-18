@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 课程媒体文件持久层接口Mapper映射文件 -->
 <mapper namespace="com.yanque.mapper.MediaFileMapper">
-
+    <select id="selectMaxMediaNumber" resultType="java.lang.Long">
+        SELECT IFNULL(MAX(number), 0)
+        FROM t_media_file
+        WHERE chapter_id = #{chapterId}
+    </select>
 </mapper>

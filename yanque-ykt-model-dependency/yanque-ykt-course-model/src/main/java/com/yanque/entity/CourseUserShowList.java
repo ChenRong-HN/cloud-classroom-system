@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 用户端课程展示列业务层模型实体类
@@ -45,7 +47,7 @@ public class CourseUserShowList {
     private String gradeName;
     /** 课程发布时间 */
     @Schema(description = "课程发布时间")
-    private Long onlineTime;
+    private LocalDate onlineTime;
     /** 讲师名称，多个讲师用逗号分隔 */
     @Schema(description = "讲师名称，多个讲师用逗号分隔")
     private String teacherNames;

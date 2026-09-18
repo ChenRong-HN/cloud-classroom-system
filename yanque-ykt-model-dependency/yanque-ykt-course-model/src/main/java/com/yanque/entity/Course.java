@@ -61,7 +61,7 @@ public class Course {
     private Long totalMinute;
     /** 上线时间 */
     @Schema(description = "上线时间")
-    private Long onlineTime;
+    private LocalDate onlineTime;
     /** 章节数量 */
     @Schema(description = "章节数量")
     private Long chapterCount;

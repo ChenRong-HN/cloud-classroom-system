@@ -1,12 +1,15 @@
 package com.yanque.controller;
 
+import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.common.vo.BasicPageVo;
 import com.yanque.entity.MediaFile;
 import com.yanque.service.IMediaFileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.constraints.Negative;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,7 +62,7 @@ public class MediaFileController {
      * @return 全局通用返回结果
      */
     @Operation(summary = "新增课程媒体文件", description = "新增课程媒体文件信息")
-    @PostMapping
+    @PostMapping("/save")
     public ApiResponse<Void> save(@RequestBody MediaFile mediaFile) {
         // 调用课程媒体文件服务层接口保存课程媒体文件信息
         mediaFileService.save(mediaFile);
@@ -92,5 +95,18 @@ public class MediaFileController {
         // 调用课程媒体文件服务层接口根据Id删除课程媒体文件信息
         mediaFileService.removeById(id);
         return ApiResponse.success();
+    }
+
+    /**
+     * 基于条件查询课程媒体文件分页数据
+     *
+     * @param basicPageVo 分页参数模型
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "删除课程媒体文件", description = "根据Id删除课程媒体文件信息")
+    @PostMapping("/pagelist")
+    public ApiResponse<ApiPageResponse<MediaFile>> pageList(@RequestBody BasicPageVo basicPageVo){
+        ApiPageResponse<MediaFile> pageR = mediaFileService.pageList(basicPageVo);
+        return ApiResponse.success(pageR);
     }
 }
