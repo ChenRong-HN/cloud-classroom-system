@@ -1,8 +1,12 @@
 package com.yanque.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.common.vo.BasicPageVo;
+import com.yanque.entity.Course;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -66,7 +70,7 @@ public class TeacherController {
      * @return 全局通用返回结果
      */
     @Operation(summary = "新增老师", description = "新增老师信息")
-    @PostMapping
+    @PostMapping("/save_teacher")
     public ApiResponse<Void> save(@RequestBody Teacher teacher) {
         // 调用老师服务层接口保存老师信息
         teacherService.save(teacher);
@@ -99,5 +103,18 @@ public class TeacherController {
         // 调用老师服务层接口根据Id删除老师信息
         teacherService.removeById(id);
         return ApiResponse.success();
+    }
+
+    /**
+     * 讲师信息分页查询
+     *
+     * @param basicPageVo 分页查询参数模型
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "讲师信息分页查询", description = "讲师信息分页查询")
+    @PostMapping("/pagelist")
+    public ApiResponse<ApiPageResponse<Teacher>> pageList(@RequestBody BasicPageVo basicPageVo) {
+        ApiPageResponse<Teacher> pageR = teacherService.pageList(basicPageVo);
+        return ApiResponse.success(pageR);
     }
 }

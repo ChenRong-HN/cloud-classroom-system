@@ -1,24 +1,27 @@
 package com.yanque.service.impl;
 
-import java.util.List;
-
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yanque.common.constant.PageConstant;
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.BasicPageVo;
+import com.yanque.entity.Course;
+import com.yanque.entity.CourseChapter;
 import com.yanque.exp.BusinessErrorType;
 import com.yanque.exp.BusinessException;
+import com.yanque.mapper.CourseChapterMapper;
+import com.yanque.service.ICourseChapterService;
+import com.yanque.service.ICourseService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import com.yanque.mapper.CourseChapterMapper;
-import com.yanque.entity.CourseChapter;
-import com.yanque.service.ICourseChapterService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 课程章节业务层接口实现类
@@ -32,7 +35,11 @@ public class CourseChapterService extends ServiceImpl<CourseChapterMapper, Cours
     @Resource
     private CourseChapterMapper courseChapterMapper;
 
+    @Resource
+    private ICourseService courseService;
+
     @Override
+    @Transactional
     public boolean save(CourseChapter courseChapter) {
         // 校验当前章节是否已存在
         LambdaQueryWrapper<CourseChapter> courseChapterLambdaQueryWrapper = Wrappers.<CourseChapter>lambdaQuery().eq(StrUtil.isNotBlank(courseChapter.getName()), CourseChapter::getName, courseChapter.getName());
@@ -40,6 +47,12 @@ public class CourseChapterService extends ServiceImpl<CourseChapterMapper, Cours
         // 查询当前课程中的最大章节编号
         Long maxChapterNumber = courseChapterMapper.selectMaxChapterNumber(courseChapter.getCourseId());
         Assert.isTrue(courseChapter.getNumber() > maxChapterNumber, () -> new BusinessException(BusinessErrorType.COURSE_CHAPTER_NUMBER_ERROR));
+
+        // 更新课程的章节数量字段
+        long chapterCount = count(Wrappers.<CourseChapter>lambdaQuery().eq(CourseChapter::getCourseId, courseChapter.getCourseId()));
+        Course course = courseService.getById(courseChapter.getCourseId());
+        course.setChapterCount(chapterCount + 1);
+        courseService.updateById(course);
         return super.save(courseChapter);
     }
 
