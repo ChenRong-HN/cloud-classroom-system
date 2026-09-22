@@ -16,6 +16,9 @@ import com.yanque.mapper.MediaFileMapper;
 import com.yanque.service.IMediaFileService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 /**
  * 课程媒体文件业务层接口实现类
@@ -53,5 +56,24 @@ public class MediaFileService extends ServiceImpl<MediaFileMapper,MediaFile> imp
         // 进行分页查询
         page = page(page, courseChapterLambdaQueryWrapper);
         return ApiPageResponse.<MediaFile>builder().total(page.getTotal()).rows(page.getRecords()).build();
+    }
+
+    /**
+     * 将媒体文件修改为相反状态
+     *
+     * @param mediaFileId 媒体文件Id
+     */
+    @Override
+    public void update2Free(Long mediaFileId) {
+        // 查询当前媒体文件的原始状态
+        MediaFile mediaFile = getById(mediaFileId);
+        mediaFile.setFree(mediaFile.getFree() == 0 ? 1 : 0);
+        // 更新媒体文件的数据
+        updateById(mediaFile);
+    }
+
+    @Override
+    public List<MediaFile> selectMediaList(Long courseId, Long chapterId) {
+        return list(Wrappers.<MediaFile>lambdaQuery().eq(MediaFile::getCourseId, courseId).eq(MediaFile::getChapterId, chapterId));
     }
 }

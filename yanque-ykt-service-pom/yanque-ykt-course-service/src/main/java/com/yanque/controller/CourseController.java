@@ -7,6 +7,7 @@ import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
 import com.yanque.entity.CourseUserShowList;
 import com.yanque.entity.vo.AddCourseReqVo;
+import com.yanque.entity.vo.CourseDetailRespVo;
 import com.yanque.entity.vo.TreeVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -141,5 +142,18 @@ public class CourseController {
     public ApiResponse<Void> offLineCourse(@RequestBody List<Long> courseIds) {
         courseService.batchDown(courseIds);
         return ApiResponse.success();
+    }
+
+    /**
+     * 查询课程信息详情
+     *
+     * @param courseId 课程信息主键
+     * @return 全局通用返回结果(课程信息实体数据)
+     */
+    @Operation(summary = "查询课程信息详情", description = "根据Id查询课程信息详细信息")
+    @GetMapping("/detail/data/{courseId}")
+    public ApiResponse<CourseDetailRespVo> selectCourseDetail(@PathVariable Long courseId){
+        // 调用服务层查询课程详情
+        return ApiResponse.success(courseService.selectCourseDetail(courseId));
     }
 }

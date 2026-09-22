@@ -5,6 +5,7 @@ import com.yanque.entity.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yanque.entity.CourseUserShowList;
 import com.yanque.entity.vo.AddCourseReqVo;
+import com.yanque.entity.vo.CourseDetailRespVo;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +28,6 @@ public interface ICourseService extends IService<Course> {
     void batchDown(List<Long> paramList);
 
     void batchOnLine(List<Long> courseIds);
+
+    CourseDetailRespVo selectCourseDetail(Long courseId);
 }

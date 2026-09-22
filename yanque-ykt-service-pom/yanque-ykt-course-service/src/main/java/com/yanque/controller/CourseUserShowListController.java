@@ -2,7 +2,9 @@ package com.yanque.controller;
 
 import java.util.List;
 
+import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.entity.vo.CourseQueryVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,7 +40,7 @@ public class CourseUserShowListController {
      * @return 全局通用返回结果(用户端课程展示列所有数据})
      */
     @Operation(summary = "查询用户端课程展示列列表", description = "查询所有用户端课程展示列信息列表")
-    @GetMapping("/list" )
+    @GetMapping("/list")
     public ApiResponse<List<CourseUserShowList>> list() {
         // 调用用户端课程展示列服务层接口查询所有用户端课程展示列信息
         List<CourseUserShowList> list = courseUserShowListService.list();
@@ -52,7 +54,7 @@ public class CourseUserShowListController {
      * @return 全局通用返回结果(用户端课程展示列实体数据)
      */
     @Operation(summary = "根据Id查询用户端课程展示列", description = "根据主键Id查询用户端课程展示列详细信息")
-    @GetMapping("/{id}" )
+    @GetMapping("/{id}")
     public ApiResponse<CourseUserShowList> getById(@Parameter(description = "用户端课程展示列Id") @PathVariable("id") Long id) {
         // 调用用户端课程展示列服务层接口根据Id查询用户端课程展示列信息
         CourseUserShowList entity = courseUserShowListService.getById(id);
@@ -94,10 +96,23 @@ public class CourseUserShowListController {
      * @return 全局通用返回结果
      */
     @Operation(summary = "删除用户端课程展示列", description = "根据Id删除用户端课程展示列信息")
-    @DeleteMapping("/{id}" )
+    @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@Parameter(description = "用户端课程展示列Id") @PathVariable("id") Long id) {
         // 调用用户端课程展示列服务层接口根据Id删除用户端课程展示列信息
         courseUserShowListService.removeById(id);
         return ApiResponse.success();
+    }
+
+    /**
+     * 分页查询用户端课程信息分页数据
+     *
+     * @param courseQueryVo 用户端课程查询参数VO
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "分页查询用户端课程信息分页数据", description = "分页查询用户端课程信息分页数据")
+    @PostMapping("/pagelist")
+    public ApiResponse<ApiPageResponse<CourseUserShowList>> pageList(@RequestBody CourseQueryVo courseQueryVo) {
+        ApiPageResponse<CourseUserShowList> pageR = courseUserShowListService.pageList(courseQueryVo);
+        return ApiResponse.success(pageR);
     }
 }

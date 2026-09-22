@@ -3,6 +3,7 @@ package com.yanque.service;
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.entity.CourseType;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yanque.entity.vo.CourseTypeCrumbRespVo;
 import com.yanque.entity.vo.TreeVo;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface ICourseTypeService extends IService<CourseType> {
     ApiPageResponse<CourseType> selectPage(Map<String, Object> paramterMap);
 
     boolean save(CourseType courseType);
+
+    List<CourseTypeCrumbRespVo> crumbs(Long courseTypeId);
 }

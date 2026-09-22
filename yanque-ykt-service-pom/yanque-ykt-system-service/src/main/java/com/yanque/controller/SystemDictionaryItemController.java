@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "系统字典选项管理", description = "系统字典选项接口")
 @RestController
-@RequestMapping("/yanque/item")
+@RequestMapping("/system/systemDictionaryItem")
 public class SystemDictionaryItemController {
 
     // 注入系统字典选项服务层接口实现类
@@ -99,5 +99,17 @@ public class SystemDictionaryItemController {
         // 调用系统字典选项服务层接口根据Id删除系统字典选项信息
         systemDictionaryItemService.removeById(id);
         return ApiResponse.success();
+    }
+
+    /**
+     * 基于sn查询系统字典选项信息
+     * @param sn 系统字典编号
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "查询系统字典选项信息", description = "基于sn查询系统字典选项信息")
+    @GetMapping("/getItemsBySn/{sn}")
+    public ApiResponse<List<SystemDictionaryItem>> getItemsBySn(@PathVariable String sn){
+        List<SystemDictionaryItem> systemDictionaryItemList = systemDictionaryItemService.getItemsBySn(sn);
+        return ApiResponse.success(systemDictionaryItemList);
     }
 }

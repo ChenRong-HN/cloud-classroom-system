@@ -1,31 +1,30 @@
 package com.yanque.service.impl;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.func.Func1;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.entity.*;
 import com.yanque.entity.vo.*;
 import com.yanque.exp.BusinessErrorType;
 import com.yanque.exp.BusinessException;
+import com.yanque.feign.client.MediaFeignClient;
+import com.yanque.mapper.CourseMapper;
 import com.yanque.service.*;
 import jakarta.annotation.Resource;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import com.yanque.mapper.CourseMapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 课程信息业务层接口实现类
@@ -58,7 +57,17 @@ public class CourseService extends ServiceImpl<CourseMapper, Course> implements 
     private ICourseTeacherService courseTeacherService;
 
     @Resource
-    private CourseUserShowListService courseUserShowListService;
+    private ICourseUserShowListService courseUserShowListService;
+
+    @Resource
+    @Lazy // 解决当前类遇到的循环依赖问题：courseService <--> courseChapterService
+    private ICourseChapterService courseChapterService;
+
+    @Resource
+    private MediaFeignClient mediaFeignClient;
+
+    @Resource
+    private ICourseSummaryService courseSummaryService;
 
     @Override
     @Transactional
@@ -98,6 +107,15 @@ public class CourseService extends ServiceImpl<CourseMapper, Course> implements 
         CourseDetail courseDetail = BeanUtil.copyProperties(courseDetailReqVo, CourseDetail.class);
         courseDetail.setId(courseId); // 主键共享
         courseDetailService.save(courseDetail);
+
+        // 添加课程统计信息,主键与课程共享(缺少该记录会导致详情页取不到统计对象)
+        CourseSummary courseSummary = CourseSummary.builder()
+                .id(courseId)
+                .saleCount(0L)
+                .viewCount(0L)
+                .commentCount(0L)
+                .build();
+        courseSummaryService.save(courseSummary);
 
         // 添加课程销售信息
         CourseMarket courseMarket = BeanUtil.copyProperties(courseMarketReqVo, CourseMarket.class);
@@ -292,4 +310,52 @@ public class CourseService extends ServiceImpl<CourseMapper, Course> implements 
         // 7. 批量插入宽表
         courseUserShowListService.saveBatch(showList);
     }
+
+    @Override
+    public CourseDetailRespVo selectCourseDetail(Long courseId) {
+
+        // 查询课程基本信息
+        Course course = getById(courseId);
+        Assert.notNull(course, () -> new BusinessException(BusinessErrorType.COURSE_NOT_EXISTS));
+        // 查询课程销售信息
+        CourseMarket courseMarket = courseMarketService.getById(courseId);
+        // 查询章节目录信息
+        List<CourseChapter> courseChapterList = courseChapterService.list(Wrappers.<CourseChapter>lambdaQuery().eq(CourseChapter::getCourseId, courseId));
+        // 将章节信息转换为返回结果中需要的CourseChapterMediaRespVo类型
+        List<CourseChapterMediaRespVo> courseChapterMediaRespVoList = courseChapterList.stream().map(courseChapter -> {
+            CourseChapterMediaRespVo courseChapterMediaRespVo = BeanUtil.copyProperties(courseChapter, CourseChapterMediaRespVo.class);
+            // 通过media的feign客户端获取媒体文件信息
+            List<MediaFile> mediaFileList = mediaFeignClient.selectMediaList(courseId, courseChapter.getId()).getData();
+            courseChapterMediaRespVo.setMediaFiles(mediaFileList);
+            return courseChapterMediaRespVo;
+        }).toList();
+        // 查询讲师信息（通过课程讲师中间表）
+        List<CourseTeacher> courseTeacherList = courseTeacherService.list(Wrappers.<CourseTeacher>lambdaQuery().eq(CourseTeacher::getCourseId, courseId));
+        // 注意:这里要取中间表的teacherId(老师主键),而不是中间表自身的id
+        List<Long> teacherIdList = courseTeacherList.stream().map(CourseTeacher::getTeacherId).toList();
+        List<Teacher> teacherList = teacherService.list(Wrappers.<Teacher>lambdaQuery().in(ObjUtil.isNotNull(teacherIdList), Teacher::getId, teacherIdList));
+        // 查询课程详情信息
+        CourseDetail courseDetail = courseDetailService.getById(courseId);
+        // 查询课程统计数据信息
+        CourseSummary courseSummary = courseSummaryService.getById(courseId);
+        // 兜底:历史课程可能缺少统计记录,此处构造默认对象返回,避免前端取到null导致整页渲染失败
+        if (ObjUtil.isNull(courseSummary)) {
+            courseSummary = CourseSummary.builder()
+                    .id(courseId)
+                    .saleCount(0L)
+                    .viewCount(0L)
+                    .commentCount(0L)
+                    .build();
+        }
+        // 构建返回结果
+        return CourseDetailRespVo.builder()
+                .course(course)
+                .courseMarket(courseMarket)
+                .courseChapters(courseChapterMediaRespVoList)
+                .teachers(teacherList)
+                .courseDetail(courseDetail)
+                .courseSummary(courseSummary)
+                .build();
+    }
+
 }

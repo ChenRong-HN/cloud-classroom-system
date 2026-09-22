@@ -28,13 +28,14 @@ public enum BusinessErrorType {
     ALIYUN_OSS_ERROR(515, "阿里云Oss服务调用异常"),
     COURSE_CHAPTER_NUMBER_ERROR(516, "课程章节顺序错误"),
     MEDIA_FILE_NUMBER_ERROR(517, "课程媒体文件顺序错误"),
-    COURSE_NOT_EXISTS(518, "要发布的课程信息数据不存在"),
+    COURSE_NOT_EXISTS(518, "课程信息数据不存在"),
     COURSE_CHAPTER_EXISTS(519, "课程章节已存在"),
     MEDIA_FILE_EXISTS(520,"该名称的媒体资料已存在"),
     COURSE_ALREADY_UP(521,"该课程已经发布过"),
     COURSE_ALREADY_DOWN(522, "勾选课程中存在已下架课程"),
     PARAM_ERROR(523,"参数错误"),
-    TEACHER_EXISTS(524, "讲师重复添加");
+    TEACHER_EXISTS(524, "讲师重复添加"),
+    SYSTEM_DICTIONARY_NOT_EXISTS(525, "系统字典数据不存在");
 
     // 状态码
     private final Integer code;

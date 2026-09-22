@@ -10,7 +10,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yanque.common.constant.RedisConstant;
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.entity.CourseType;
+import com.yanque.entity.vo.CourseTypeCrumbRespVo;
 import com.yanque.entity.vo.TreeVo;
+import com.yanque.exp.BusinessErrorType;
+import com.yanque.exp.BusinessException;
 import com.yanque.mapper.CourseTypeMapper;
 import com.yanque.service.ICourseTypeService;
 import jakarta.annotation.Resource;
@@ -23,6 +26,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -125,5 +129,30 @@ public class CourseTypeService extends ServiceImpl<CourseTypeMapper, CourseType>
     @CacheEvict(cacheNames = RedisConstant.COURSE_TYPE_TREE_DATA_LIST_KEY, allEntries = true)
     public boolean removeById(Serializable id) {
         return super.removeById(id);
+    }
+
+    @Override
+    public List<CourseTypeCrumbRespVo> crumbs(Long courseTypeId) {
+        // 根据课程类型id查询课程类型对象
+        CourseType ownerProductType = getById(courseTypeId);
+        Assert.notNull(ownerProductType, () -> new BusinessException(BusinessErrorType.COURSE_TYPE_NOT_EXISTS));
+        // 获取该课程分类的父分类id集合
+        List<Long> courseTypeParentIdList = StrUtil.split(ownerProductType.getPath(), ".").stream().map(Long::valueOf).toList();
+        // 获取课程信息父分类集合
+        List<CourseType> parentCourseTypeList = list(Wrappers.<CourseType>lambdaQuery().in(ObjUtil.isNotNull(courseTypeParentIdList), CourseType::getId, courseTypeParentIdList));
+        // 将parentCourseTypeList转换为CourseTypeCrumbRespVoList（组装返回值）
+        List<CourseTypeCrumbRespVo> courseTypeCrumbRespVoList = parentCourseTypeList.stream().map(courseType -> {
+            // 创建CourseTypeCrumbRespVo对象
+            CourseTypeCrumbRespVo courseTypeCrumbRespVo = new CourseTypeCrumbRespVo();
+            courseTypeCrumbRespVo.setOwnerProductType(courseType);
+            // 查询当前课程分类对象的兄弟课程分类并赋值
+            List<CourseType> otherProducuTypeList = list(Wrappers.<CourseType>lambdaQuery().eq(CourseType::getPid, courseType.getPid()))
+                    .stream()
+                    // 过滤掉自己
+                    .filter(c -> ObjUtil.notEqual(courseType.getId(), c.getId())).toList();
+            courseTypeCrumbRespVo.setOtherProductTypes(otherProducuTypeList);
+            return courseTypeCrumbRespVo;
+        }).toList();
+        return courseTypeCrumbRespVoList;
     }
 }

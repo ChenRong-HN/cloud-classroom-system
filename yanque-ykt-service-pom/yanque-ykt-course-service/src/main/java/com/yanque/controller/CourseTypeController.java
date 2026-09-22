@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.entity.vo.CourseTypeCrumbRespVo;
 import com.yanque.entity.vo.TreeVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -127,5 +128,18 @@ public class CourseTypeController {
     public ApiResponse<ApiPageResponse<CourseType>> pageList(@RequestBody Map<String, Object> paramterMap) {
         ApiPageResponse<CourseType> pageR = courseTypeService.selectPage(paramterMap);
         return ApiResponse.success(pageR);
+    }
+
+    /**
+     * 基于课程类型id查询并封装返回面包屑数据
+     *
+     * @param courseTypeId 课程类型id
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "获取面包屑数据", description = "基于课程类型id获取面包屑数据")
+    @GetMapping("/crumbs/{courseTypeId}")
+    public ApiResponse<List<CourseTypeCrumbRespVo>> crumbs(@PathVariable Long courseTypeId) {
+        List<CourseTypeCrumbRespVo> courseTypeCrumbRespVoList = courseTypeService.crumbs(courseTypeId);
+        return ApiResponse.success(courseTypeCrumbRespVoList);
     }
 }

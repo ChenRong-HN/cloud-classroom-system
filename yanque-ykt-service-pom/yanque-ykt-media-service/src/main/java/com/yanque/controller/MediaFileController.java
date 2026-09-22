@@ -1,5 +1,7 @@
 package com.yanque.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
 import com.yanque.common.vo.BasicPageVo;
@@ -108,5 +110,33 @@ public class MediaFileController {
     public ApiResponse<ApiPageResponse<MediaFile>> pageList(@RequestBody BasicPageVo basicPageVo){
         ApiPageResponse<MediaFile> pageR = mediaFileService.pageList(basicPageVo);
         return ApiResponse.success(pageR);
+    }
+
+    /**
+     * 将媒体文件修改为相反状态
+     *
+     * @param mediaFileId 媒体文件Id
+     * @return 全局通用返回结果
+     */
+    @PostMapping("/update2Free/{mediaFileId}")
+    @Operation(summary = "将媒体文件修改为相反状态", description = "将媒体文件修改为相反状态")
+    public ApiResponse<Void> update2Free(@PathVariable Long mediaFileId) {
+        // 调用服务层进行修改
+        mediaFileService.update2Free(mediaFileId);
+        return ApiResponse.success();
+    }
+
+    /**
+     * 查询课程媒体文件列表
+     *
+     * @param courseId  课程Id
+     * @param chapterId 章节Id
+     * @return 全局通用返回结果(课程媒体文件列表数据)
+     */
+    @Operation(summary = "查询课程媒体文件列表", description = "查询课程媒体文件信息列表")
+    @GetMapping("/selectMediaList/{courseId}/{chapterId}")
+    public ApiResponse<List<MediaFile>> selectMediaList(@PathVariable Long courseId, @PathVariable Long chapterId) {
+        List<MediaFile> mediaFileList = mediaFileService.selectMediaList(courseId,chapterId);
+        return ApiResponse.success(mediaFileList);
     }
 }

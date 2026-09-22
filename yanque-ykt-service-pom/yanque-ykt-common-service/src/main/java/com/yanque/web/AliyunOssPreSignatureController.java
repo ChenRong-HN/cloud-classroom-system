@@ -15,10 +15,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URL;
 import java.util.Date;
@@ -79,7 +76,7 @@ public class AliyunOssPreSignatureController {
     @GetMapping("/getPreSignUpload")
     public ApiResponse<Map<String, String>> getAliyunOssPreSignatureURL(@RequestParam String dir, @RequestParam String fileSuffix, @RequestParam String contentType) {
         // 通过UUID生成一个随机文件名称
-        String objectName = dir.concat("/").concat(UUID.randomUUID().toString(true)).concat(fileSuffix);
+        String objectName = dir.concat("/").concat(UUID.randomUUID().toString(true)).concat(".").concat(fileSuffix);
         URL signedUrl = null;
         try {
             // 生成预签名URL请求对象 -> 之后基于URL上传文件 默认会上传到指定的Bucket,文件在桶中的名称就是指定的objectName,必须使用PUT方式
@@ -96,6 +93,28 @@ public class AliyunOssPreSignatureController {
             return ApiResponse.success(rMap);
         } catch (OSSException oe) {
             log.error("获取阿里云Oss预签名URL失败 失败原因 {}", oe.getMessage());
+            throw new BusinessException(BusinessErrorType.ALIYUN_OSS_ERROR);
+        }
+    }
+
+    /**
+     * 获取Oss预签名下载URL
+     * @param param 请求参数map
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "获取Oss预签名下载URL", description = "获取阿里云Oss预签名URL")
+    @PostMapping("/getPreSignDownLoad")
+    public ApiResponse<String> getPreSignDownLoad(@RequestBody Map<String, Object> param){
+        String objectKey = (String) param.get("objectKey");
+        try {
+            GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, objectKey, HttpMethod.GET);
+            // 手动声明过期时间
+            Date expiration = new Date(new Date().getTime() + 3600 * 1000L);
+            request.setExpiration(expiration);
+            URL signedUrl = ossClient.generatePresignedUrl(request);
+            return ApiResponse.success(signedUrl.toString());
+        } catch (OSSException oe) {
+            log.error("获取OSS预签名下载URL失败 objectKey={} 原因 {}", objectKey, oe.getMessage());
             throw new BusinessException(BusinessErrorType.ALIYUN_OSS_ERROR);
         }
     }
