@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "员工信息管理", description = "员工信息接口")
 @RestController
-@RequestMapping("/yanque/employee")
+@RequestMapping("/system/employee")
 public class EmployeeController {
 
     // 注入员工信息服务层接口实现类

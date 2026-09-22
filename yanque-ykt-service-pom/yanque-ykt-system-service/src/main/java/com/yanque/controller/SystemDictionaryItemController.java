@@ -2,7 +2,10 @@ package com.yanque.controller;
 
 import java.util.List;
 
+import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.common.vo.BasicPageVo;
+import com.yanque.entity.SystemDictionary;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "系统字典选项管理", description = "系统字典选项接口")
 @RestController
-@RequestMapping("/system/systemDictionaryItem")
+@RequestMapping("/system/systemdictionaryitem")
 public class SystemDictionaryItemController {
 
     // 注入系统字典选项服务层接口实现类
@@ -111,5 +114,18 @@ public class SystemDictionaryItemController {
     public ApiResponse<List<SystemDictionaryItem>> getItemsBySn(@PathVariable String sn){
         List<SystemDictionaryItem> systemDictionaryItemList = systemDictionaryItemService.getItemsBySn(sn);
         return ApiResponse.success(systemDictionaryItemList);
+    }
+
+    /**
+     * 系统数据字典分页查询
+     *
+     * @param basicPageVo 分页查询条件
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "系统数据字典分页查询", description = "系统数据字典分页查询")
+    @PostMapping("/pagelist")
+    public ApiResponse<ApiPageResponse<SystemDictionaryItem>> pageList(@RequestBody BasicPageVo basicPageVo) {
+        ApiPageResponse<SystemDictionaryItem> pageR = systemDictionaryItemService.pageList(basicPageVo);
+        return ApiResponse.success(pageR);
     }
 }

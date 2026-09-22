@@ -3,12 +3,18 @@ package com.yanque.controller;
 import java.util.List;
 import java.util.Map;
 
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ObjUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
 import com.yanque.entity.CourseUserShowList;
 import com.yanque.entity.vo.AddCourseReqVo;
 import com.yanque.entity.vo.CourseDetailRespVo;
+import com.yanque.entity.vo.CourseOrderConfirmRespVo;
 import com.yanque.entity.vo.TreeVo;
+import com.yanque.exp.BusinessErrorType;
+import com.yanque.exp.BusinessException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -152,8 +158,21 @@ public class CourseController {
      */
     @Operation(summary = "查询课程信息详情", description = "根据Id查询课程信息详细信息")
     @GetMapping("/detail/data/{courseId}")
-    public ApiResponse<CourseDetailRespVo> selectCourseDetail(@PathVariable Long courseId){
+    public ApiResponse<CourseDetailRespVo> selectCourseDetail(@PathVariable Long courseId) {
         // 调用服务层查询课程详情
         return ApiResponse.success(courseService.selectCourseDetail(courseId));
+    }
+
+    /**
+     * 确认订单查询课程信息
+     *
+     * @param courseIds 课程id
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "查询课程信息", description = "根据Id查询课程信息")
+    @GetMapping("/info/{courseIds}") // 当路径参数是通过“,”分割，则可以通过集合来自动接收（其他符号不行）
+    public ApiResponse<CourseOrderConfirmRespVo> orderConfirm(@PathVariable List<Long> courseIds) {
+        CourseOrderConfirmRespVo courseOrderConfirmRespVo = courseService.orderConfirm(courseIds);
+        return ApiResponse.success(courseOrderConfirmRespVo);
     }
 }

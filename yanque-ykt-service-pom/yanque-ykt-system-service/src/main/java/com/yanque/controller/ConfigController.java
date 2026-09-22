@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "参数配置管理", description = "参数配置接口")
 @RestController
-@RequestMapping("/yanque/config")
+@RequestMapping("/system/config")
 public class ConfigController {
 
     // 注入参数配置服务层接口实现类

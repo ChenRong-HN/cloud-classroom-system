@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "操作日志记录管理", description = "操作日志记录接口")
 @RestController
-@RequestMapping("/yanque/log")
+@RequestMapping("/system/log")
 public class OperationLogController {
 
     // 注入操作日志记录服务层接口实现类

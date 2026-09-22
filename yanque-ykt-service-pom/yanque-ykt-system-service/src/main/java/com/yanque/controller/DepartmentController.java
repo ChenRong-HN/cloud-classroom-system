@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "部门信息管理", description = "部门信息接口")
 @RestController
-@RequestMapping("/yanque/department")
+@RequestMapping("/system/department")
 public class DepartmentController {
 
     // 注入部门信息服务层接口实现类

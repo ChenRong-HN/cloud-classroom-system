@@ -17,9 +17,9 @@ public enum BusinessErrorType {
     PASSWORD_ERROR(503, "用户登录密码错误"),
     MAIL_SEND_COUNT_GT3(505, "今日发送邮件次数已超过限制"),
     MAIL_LAST_SEND_IN_1MIN(506, "邮件发送间隔不能小于1分钟"),
-    USER_ACCOUNT_EXISTS(507,"用户已存在"),
-    EMAIL_VALIDATE_CODE_EXPIRED(508,"验证码已过期"),
-    EMAIL_VALIDATE_CODE_ERROR(509,"验证码有误，请重新输入"),
+    USER_ACCOUNT_EXISTS(507, "用户已存在"),
+    EMAIL_VALIDATE_CODE_EXPIRED(508, "验证码已过期"),
+    EMAIL_VALIDATE_CODE_ERROR(509, "验证码有误，请重新输入"),
     REMOTE_SERVICE_ERROR(510, "远程服务调用错误"),
     COURSE_NAME_EXISTS(511, "课程名称已存在"),
     COURSE_TYPE_NOT_EXISTS(512, "课程分类数据不存在"),
@@ -30,12 +30,14 @@ public enum BusinessErrorType {
     MEDIA_FILE_NUMBER_ERROR(517, "课程媒体文件顺序错误"),
     COURSE_NOT_EXISTS(518, "课程信息数据不存在"),
     COURSE_CHAPTER_EXISTS(519, "课程章节已存在"),
-    MEDIA_FILE_EXISTS(520,"该名称的媒体资料已存在"),
-    COURSE_ALREADY_UP(521,"该课程已经发布过"),
+    MEDIA_FILE_EXISTS(520, "该名称的媒体资料已存在"),
+    COURSE_ALREADY_UP(521, "该课程已经发布过"),
     COURSE_ALREADY_DOWN(522, "勾选课程中存在已下架课程"),
-    PARAM_ERROR(523,"参数错误"),
+    PARAM_ERROR(523, "参数错误"),
     TEACHER_EXISTS(524, "讲师重复添加"),
-    SYSTEM_DICTIONARY_NOT_EXISTS(525, "系统字典数据不存在");
+    SYSTEM_DICTIONARY_NOT_EXISTS(525, "系统字典数据不存在"),
+    ORDER_CONFIRM_ERROR(526, "订单确认错误"),
+    ORDER_REPEAT_SUBMIT(527, "订单重复提交错误");
 
     // 状态码
     private final Integer code;

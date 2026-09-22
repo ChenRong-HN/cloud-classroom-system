@@ -2,6 +2,8 @@ package com.yanque.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
@@ -22,8 +24,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -356,6 +363,31 @@ public class CourseService extends ServiceImpl<CourseMapper, Course> implements 
                 .courseDetail(courseDetail)
                 .courseSummary(courseSummary)
                 .build();
+    }
+
+    @Override
+    public CourseOrderConfirmRespVo orderConfirm(List<Long> courseIds) {
+        // 校验参数合法性
+        Assert.isTrue(ObjUtil.isNotEmpty(courseIds), () -> new BusinessException(BusinessErrorType.PARAM_ERROR));
+        // 校验课程是否是已发布状态
+        List<Course> courseList = list(Wrappers.<Course>lambdaQuery().in(Course::getId, courseIds).eq(Course::getStatus,1L));
+        Assert.equals(courseIds.size(),courseList.size(),()->new BusinessException(BusinessErrorType.ORDER_CONFIRM_ERROR));
+
+        // 封装返回结果
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        ArrayList<CourseOrderConfirmItemRespVo> courseOrderConfirmItemRespVoList = new ArrayList<>();
+        for (Course course : courseList) {
+            CourseMarket courseMarket = courseMarketService.getById(course.getId());
+            // 计算过期时间
+            LocalDate expireDate = LocalDate.now().plusDays(courseMarket.getValidDays());
+            course.setWatchExpireTime(expireDate);
+            CourseOrderConfirmItemRespVo courseOrderConfirmItemRespVo = CourseOrderConfirmItemRespVo.builder().course(course).courseMarket(courseMarket).build();
+            courseOrderConfirmItemRespVoList.add(courseOrderConfirmItemRespVo);
+            // 累计总价格
+            totalAmount = totalAmount.add(courseMarket.getPrice());
+        }
+
+        return CourseOrderConfirmRespVo.builder().items(courseOrderConfirmItemRespVoList).totalAmount(totalAmount).build();
     }
 
 }

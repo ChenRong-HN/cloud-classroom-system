@@ -1,8 +1,11 @@
 package com.yanque.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.common.vo.BasicPageVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "系统字典管理", description = "系统字典接口")
 @RestController
-@RequestMapping("/yanque/dictionary")
+@RequestMapping("/system/systemdictionary")
 public class SystemDictionaryController {
 
     // 注入系统字典服务层接口实现类
@@ -99,5 +102,18 @@ public class SystemDictionaryController {
         // 调用系统字典服务层接口根据Id删除系统字典信息
         systemDictionaryService.removeById(id);
         return ApiResponse.success();
+    }
+
+    /**
+     * 系统数据字典分页查询
+     *
+     * @param basicPageVo 分页查询条件
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "系统数据字典分页查询", description = "系统数据字典分页查询")
+    @PostMapping("/pagelist")
+    public ApiResponse<ApiPageResponse<SystemDictionary>> pageList(@RequestBody BasicPageVo basicPageVo) {
+        ApiPageResponse<SystemDictionary> pageR = systemDictionaryService.pageList(basicPageVo);
+        return ApiResponse.success(pageR);
     }
 }

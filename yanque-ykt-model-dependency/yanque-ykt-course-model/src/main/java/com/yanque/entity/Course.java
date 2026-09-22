@@ -1,5 +1,7 @@
 package com.yanque.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,4 +70,10 @@ public class Course {
     /** 讲师(以,分隔多位) */
     @Schema(description = "讲师(以,分隔多位)")
     private String teacherNames;
+    /**
+     * 观看过期时间，非数据库字段，序列化输出 yyyy-MM-dd
+     */
+    @TableField(exist = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate watchExpireTime;
 }
