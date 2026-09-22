@@ -74,25 +74,4 @@ public class CommonController {
             throw new BusinessException(BusinessErrorType.MAIL_SEND_COUNT_GT3);
         return ApiResponse.success();
     }
-
-    /**
-     * 创建订单确认令牌
-     *
-     * @param courseIds 课程id集合
-     * @return 全局通用返回结果
-     */
-    @GetMapping("/createToken/{courseIds}")
-    @Operation(summary = "创建订单确认令牌", description = "创建订单确认令牌")
-    public ApiResponse<String> createToken(@PathVariable List<Long> courseIds) {
-        // 生成redis的令牌key
-        String tokenUUID = UUID.fastUUID().toString();
-        // 模拟用户id 5L
-        String redisTokenKey = RedisConstant.ORDER_CONFIRM_TOKEN_KEY.concat("5").concat(":").concat(tokenUUID);
-
-        // 往redis中存入key和value，设置默认过期时间30分钟
-        redisTemplate.opsForValue().set(redisTokenKey, courseIds, RedisConstant.ORDER_CONFIRM_DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
-
-        // 📌 只响应UUID部分
-        return ApiResponse.success(tokenUUID);
-    }
 }

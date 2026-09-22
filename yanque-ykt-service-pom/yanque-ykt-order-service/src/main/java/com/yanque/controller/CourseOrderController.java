@@ -3,12 +3,14 @@ package com.yanque.controller;
 import java.util.List;
 
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.entity.vo.PlaceOrderReqVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import com.yanque.entity.CourseOrder;
 import com.yanque.service.ICourseOrderService;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,7 +40,7 @@ public class CourseOrderController {
      * @return 全局通用返回结果(订单所有数据)
      */
     @Operation(summary = "查询订单列表", description = "查询所有订单信息列表")
-    @GetMapping("/list" )
+    @GetMapping("/list")
     public ApiResponse<List<CourseOrder>> list() {
         // 调用订单服务层接口查询所有订单信息
         List<CourseOrder> list = courseOrderService.list();
@@ -52,7 +54,7 @@ public class CourseOrderController {
      * @return 全局通用返回结果(订单实体数据)
      */
     @Operation(summary = "根据Id查询订单", description = "根据主键Id查询订单详细信息")
-    @GetMapping("/{id}" )
+    @GetMapping("/{id}")
     public ApiResponse<CourseOrder> getById(@Parameter(description = "订单Id") @PathVariable("id") Long id) {
         // 调用订单服务层接口根据Id查询订单信息
         CourseOrder entity = courseOrderService.getById(id);
@@ -94,10 +96,23 @@ public class CourseOrderController {
      * @return 全局通用返回结果
      */
     @Operation(summary = "删除订单", description = "根据Id删除订单信息")
-    @DeleteMapping("/{id}" )
+    @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@Parameter(description = "订单Id") @PathVariable("id") Long id) {
         // 调用订单服务层接口根据Id删除订单信息
         courseOrderService.removeById(id);
         return ApiResponse.success();
+    }
+
+    /**
+     * 保存订单
+     *
+     * @param placeOrderReqVo 保存订单请求参数
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "保存订单", description = "保存订单")
+    @PostMapping("/placeOrder")
+    public ApiResponse<String> placeOrder(@Valid @RequestBody PlaceOrderReqVo placeOrderReqVo) {
+        String orderNo = courseOrderService.placeOrder(placeOrderReqVo);
+        return ApiResponse.success(orderNo);
     }
 }

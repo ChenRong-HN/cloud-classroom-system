@@ -5,18 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.yanque</groupId>
-        <artifactId>yanque-ykt-pom</artifactId>
+        <artifactId>yanque-ykt-common-feign-dependency</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>yanque-ykt-common-feign-dependency</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>yanque-ykt-system-feign</module>
-        <module>yanque-ykt-uaa-feign</module>
-        <module>yanque-ykt-media-feign</module>
-        <module>yanque-ykt-course-feign</module>
-    </modules>
+    <artifactId>yanque-ykt-course-feign</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -25,15 +18,17 @@
     </properties>
 
     <dependencies>
-        <!-- SpringCloud OpenFeign依赖 -->
+        <!-- 课程信息服务模型依赖-->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <groupId>com.yanque</groupId>
+            <artifactId>yanque-ykt-course-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!-- SpringCloud 负载均衡依赖 -->
+        <!-- 全局通用依赖 -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+            <groupId>com.yanque</groupId>
+            <artifactId>yanque-ykt-common-tool-dependency</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
