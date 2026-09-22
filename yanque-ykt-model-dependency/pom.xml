@@ -17,6 +17,7 @@
         <module>yanque-ykt-user-model</module>
         <module>yanque-ykt-course-model</module>
         <module>yanque-ykt-media-model</module>
+        <module>yanque-ykt-order-model</module>
     </modules>
 
     <properties>
