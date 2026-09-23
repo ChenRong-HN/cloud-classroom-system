@@ -19,6 +19,7 @@
         <module>yanque-ykt-course-service</module>
         <module>yanque-ykt-media-service</module>
         <module>yanque-ykt-order-service</module>
+        <module>yanque-ykt-pay-service</module>
     </modules>
 
     <properties>

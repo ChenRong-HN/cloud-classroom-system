@@ -18,6 +18,7 @@
         <module>yanque-ykt-course-model</module>
         <module>yanque-ykt-media-model</module>
         <module>yanque-ykt-order-model</module>
+        <module>yanque-ykt-pay-model</module>
     </modules>
 
     <properties>

@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: yanque-ykt-pay-service # 项目名称(注册到Nacos中的服务名称)
+  cloud:
+    nacos:
+      server-addr: 192.168.8.5:8848 # Nacos服务注册地址
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource # Druid连接池
+    driver-class-name: com.mysql.cj.jdbc.Driver # 驱动名称
+    url: jdbc:mysql://192.168.8.5:3306/yanque_ykt_pay?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root # 用户名
+    password: yanque-ykt-17 # 密码
+  data:
+    redis:
+      host: 192.168.8.5 # Redis服务地址
+      port: 6379 # Redis服务端口
+      database: 0 # Redis默认访问数据库
+      password: yanque-17 # Redis访问密码
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto # 默认主键生成策略为自增
+      table-prefix: t_ # 通用表前缀
+  type-aliases-package: com.yanque.entity # 实体类包扫描路径
+  mapper-locations: classpath*:/mapper/**/*.xml # XML映射文件扫描
+  configuration:
+    map-underscore-to-camel-case: true # 驼峰转换
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 日志输出源
+    cache-enabled: false # 禁用二级缓存(微服务场景推荐禁用二级缓存)
+server:
+  port: 10090 # 默认部署端口
+springdoc:
+  api-docs:
+    enabled: true       # 开启文档生成
+    path: /v3/api-docs  # 元数据版本声明
+  swagger-ui:
+    enabled: true       # 开启原始SwaggerUI渲染
+knife4j:
+  enable: true          # 开启Knife4j增强模式(支持中文)
+  setting:
+    language: zh_cn               # 中文支持
+    enable-swagger-models: true   # 显示实体类列表
+    enable-document-manage: true  # 开启离线管理文档
+
