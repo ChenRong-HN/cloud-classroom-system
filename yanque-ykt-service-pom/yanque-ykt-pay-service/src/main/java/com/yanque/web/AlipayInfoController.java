@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "支付宝参数信息管理", description = "支付宝参数信息接口")
 @RestController
-@RequestMapping("/aliPayInfo")
+@RequestMapping("/pay/aliPayInfo")
 public class AlipayInfoController {
 
     // 注入支付宝参数信息服务层接口实现类

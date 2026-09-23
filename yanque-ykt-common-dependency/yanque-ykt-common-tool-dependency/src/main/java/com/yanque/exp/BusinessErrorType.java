@@ -37,7 +37,10 @@ public enum BusinessErrorType {
     TEACHER_EXISTS(524, "讲师重复添加"),
     SYSTEM_DICTIONARY_NOT_EXISTS(525, "系统字典数据不存在"),
     ORDER_CONFIRM_ERROR(526, "订单确认错误"),
-    ORDER_REPEAT_SUBMIT(527, "订单重复提交错误");
+    ORDER_REPEAT_SUBMIT(527, "订单重复提交错误"),
+    ALI_PAY_INFO_NOT_EXISTS(528, "支付宝支付参数不存在"),
+    ALI_PAY_REQUEST_ERROR(529, "支付宝支付请求失败"),
+    TRANSACTION_MESSAGE_ERROR(530, "事务消息处理失败");
 
     // 状态码
     private final Integer code;

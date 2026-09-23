@@ -18,7 +18,7 @@
         <spring-cloud-alibaba.version>2023.0.3.2</spring-cloud-alibaba.version>
         <mybatis-plus.version>3.5.9</mybatis-plus.version>
         <druid.version>1.2.28</druid.version>
-        <rocketmq-spring.version>2.3.0</rocketmq-spring.version>
+        <rocketmq-spring.version>2.3.3</rocketmq-spring.version>
         <jjwt.version>0.13.0</jjwt.version>
     </properties>
     <groupId>com.yanque</groupId>

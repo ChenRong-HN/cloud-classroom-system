@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "支付流水管理", description = "支付流水接口")
 @RestController
-@RequestMapping("/payFlow")
+@RequestMapping("/pay/payFlow")
 public class PayFlowController {
 
     // 注入支付流水服务层接口实现类

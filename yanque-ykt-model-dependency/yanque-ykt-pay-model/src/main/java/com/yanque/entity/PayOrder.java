@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 /**
  * 支付订单业务层模型实体类
  *
@@ -21,7 +25,7 @@ public class PayOrder {
     private Long id;
     /** 订单支付发生金额 */
     @Schema(description = "订单支付发生金额")
-    private Long amount;
+    private BigDecimal amount;
     /** 支付方式(0:余额支付、1:支付宝支付、2:微信支付、3:银联支付) */
     @Schema(description = "支付方式(0:余额支付、1:支付宝支付、2:微信支付、3:银联支付)")
     private Long payType;
@@ -45,8 +49,8 @@ public class PayOrder {
     private Long payStatus;
     /** 创建时间 */
     @Schema(description = "创建时间")
-    private String createTime;
+    private LocalDateTime createTime;
     /** 更新时间 */
     @Schema(description = "更新时间")
-    private String updateTime;
+    private LocalDateTime  updateTime;
 }

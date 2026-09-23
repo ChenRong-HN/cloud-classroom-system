@@ -41,4 +41,6 @@ knife4j:
     language: zh_cn               # 中文支持
     enable-swagger-models: true   # 显示实体类列表
     enable-document-manage: true  # 开启离线管理文档
+rocketmq:
+  name-server: 192.168.8.5:9876 # NameSrv的访问地址
 
