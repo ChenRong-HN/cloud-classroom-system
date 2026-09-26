@@ -57,7 +57,7 @@ public class OrderPayTransactionMessageListener implements RocketMQLocalTransact
     }
 
     /**
-     * 检查本地事务（当执行本地事务，返回状态UNKNOWN）
+     * 检查本地事务（当执行本地事务返回状态UNKNOWN执行）
      *
      * @param msg 消息
      * @return 本地事务状态

@@ -8,7 +8,7 @@ import lombok.Data;
  * @author cr
  */
 @Data
-public class AliPayNotifyRepVo {
+public class AliPayNotifyReqVo {
     /**
      * 编码集
      */

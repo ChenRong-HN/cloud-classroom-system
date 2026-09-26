@@ -1,4 +1,4 @@
-package com.yanque.mq.listener;
+package com.yanque.mq.consumer;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.json.JSONUtil;

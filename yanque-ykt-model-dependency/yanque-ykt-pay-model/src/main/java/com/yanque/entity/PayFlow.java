@@ -1,7 +1,9 @@
 package com.yanque.entity;
 
     import java.time.LocalDate;
-import io.swagger.v3.oas.annotations.media.Schema;
+    import java.time.LocalDateTime;
+
+    import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +24,7 @@ public class PayFlow {
     private Long id;
     /** 交易时间 */
     @Schema(description = "交易时间")
-    private LocalDate notifyTime;
+    private LocalDateTime notifyTime;
     /** 标题 */
     @Schema(description = "标题")
     private String subject;

@@ -21,6 +21,7 @@ import com.yanque.feign.client.CourseFeignClient;
 import com.yanque.mapper.CourseOrderItemMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
@@ -111,6 +112,10 @@ public class CourseOrderService extends ServiceImpl<CourseOrderMapper, CourseOrd
         // 📌 发送事务消息
         rocketMQTemplate.sendMessageInTransaction(RocketMQConstant.buildDestination(RocketMQConstant.ORDER_PAY_TOPIC, RocketMQConstant.ORDER_PAY_TAG),
                 message, parameterMap);
+        // 📌 发送延迟消息检查订单状态 延迟级别16 -> 30分钟
+        Message<String> delayMessage = MessageBuilder.withPayload(orderNo).build();
+        SendResult sendResult = rocketMQTemplate.syncSend(RocketMQConstant.buildDestination(RocketMQConstant.ORDER_STATUS_TOPIC, RocketMQConstant.ORDER_STATUS_CANCEL_TAG), delayMessage, 16L);
+        log.warn("订单编号 {} 的延迟消息已发送,发送结果 {}", orderNo, sendResult.getSendStatus());
 
         log.warn("订单创建成功、订单的主键Id {} 订单编号 {}", courseOrder.getId(), courseOrder.getOrderNo());
         return orderNo;

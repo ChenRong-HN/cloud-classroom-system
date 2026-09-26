@@ -1,5 +1,6 @@
 package com.yanque.tool;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
@@ -15,7 +16,10 @@ import com.yanque.service.IAlipayInfoService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 /**
  * 支付宝支付工具类（容器启动读取，也可以参考<a href="https://gitee.com/b0w3n/yanque-ykt-pom/blob/master/yanque-ykt-service-pom/yanque-ykt-pay-service/src/main/java/com/yanque/tool/AliPayTool.java">...</a>实时读取）
@@ -29,6 +33,9 @@ public class AliPayTool {
     // 注入支付宝参数信息服务
     @Resource
     private IAlipayInfoService alipayInfoService;
+
+    @Value("${default.pay.expire}")
+    private Integer defaultPayExpireValue;
 
     // 支付宝参数对象
     private AlipayConfig alipayConfig;
@@ -73,6 +80,10 @@ public class AliPayTool {
         model.setSubject(subject);
         // 声明产品码
         model.setProductCode("FAST_INSTANT_TRADE_PAY");
+        // 声明支付请求过期时间(超期未支付则支付宝自动关单) 30分钟内不支付支付宝自动关单（推荐使用TimeExpire，两者共存时，TimeExpire优先）
+        // model.setTimeoutExpress("30m");
+        // 声明支付超时时间
+        model.setTimeExpire(DateUtil.formatLocalDateTime(LocalDateTime.now().plusMinutes(defaultPayExpireValue)));
         // 声明请求参数
         request.setBizModel(model);
         // 📌 声明同步回调

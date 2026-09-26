@@ -40,7 +40,11 @@ public enum BusinessErrorType {
     ORDER_REPEAT_SUBMIT(527, "订单重复提交错误"),
     ALI_PAY_INFO_NOT_EXISTS(528, "支付宝支付参数不存在"),
     ALI_PAY_REQUEST_ERROR(529, "支付宝支付请求失败"),
-    TRANSACTION_MESSAGE_ERROR(530, "事务消息处理失败");
+    TRANSACTION_MESSAGE_ERROR(530, "事务消息处理失败"),
+    PAY_TYPE_ERROR(531, "不支持的支付方式错误"),
+    PAY_ORDER_NOT_FOUND(532, "支付订单不存在"),
+    PAY_STATUS_ERROR(533, "支付订单状态错误"),
+    COURSE_ORDER_NOT_FOUND(534, "课程订单数据不存在");
 
     // 状态码
     private final Integer code;
