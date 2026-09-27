@@ -18,6 +18,9 @@
         <el-form-item>
           <el-button type="danger" @click="offLineCourse" size="small" icon="el-icon-download">课程下架</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="killCourseModelView" size="small" icon="el-icon-sell">加入秒杀</el-button>
+        </el-form-item>
       </el-form>
     </el-col>
 
@@ -196,6 +199,38 @@
         <el-button type="primary" @click.native="addSubmit" icon="el-icon-check">提交</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="添加秒杀课程" :visible.sync="killCourseFormVisible"  :close-on-click-modal="false">
+      <el-form :model="killCourseForm" label-width="80px"  ref="addForm">
+        <el-form-item label="课程名字" prop="price">
+          <el-input :disabled="true"  v-model="killCourseForm.courseName" auto-complete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="秒杀活动" prop="activityId">
+          <el-select v-model="killCourseForm.activityId" placeholder="请选择秒杀活动">
+            <el-option v-for="item in killActivitys"
+                       :key="item.id"
+                       :label="item.name"
+                       :value="item.id">
+              <span style="float: left">{{ item.name }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.timeStr }}</span>
+            </el-option>
+          </el-select>
+          &nbsp;&nbsp;秒杀课程加入秒杀活动,秒杀时间以活动时间为准
+        </el-form-item>
+
+        <el-form-item label="秒杀价格" prop="price">
+          <el-input  v-model="killCourseForm.killPrice" auto-complete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="秒杀数量" prop="name">
+          <el-input v-model="killCourseForm.killCount" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="killCourseFormVisible = false" icon="el-icon-remove">取消</el-button>
+        <el-button type="primary" @click.native="addKillCourseSubmit"  icon="el-icon-check">提交</el-button>
+      </div>
+    </el-dialog>
   </section>
 </template>
 
@@ -264,6 +299,18 @@ export default {
       total: 0, //分页总数
       courses: [], //当前页数据
       sels: '',
+      killCourseFormVisible: false,
+      killCourseForm: {
+        courseId: "",
+        killCount: "",
+        startTime: "",
+        endTime: "",
+        killPrice: "",
+        courseName: "",
+        coursePic: "",
+        teacherNames: "",
+        activityId: "",
+      }
     }
   },
   methods: {
@@ -589,6 +636,52 @@ export default {
       this.row = sels;
       this.sels = sels;
     },
+    //秒杀相关
+    getKillActivitys(){
+      this.$http.get("/kill/killActivity/list").then(result=>{
+        let {data,success,message} = result.data;
+        if(success){
+          this.killActivitys = data;
+        }else{
+          this.$message({ message: message,type: 'error'});
+        }
+      }).catch(error => {
+        this.$message({ message: error.message,type: 'error'});
+      });
+    },
+    killCourseModelView() {
+      console.log(this.row);
+      const rowData = Array.isArray(this.row) ? this.row[0] : this.row;
+      if (!rowData) {
+        this.$message({message: '请选择要加入秒杀活动的课程数据', type: 'error'});
+        return;
+      }
+      this.killCourseForm.courseId = rowData.id;
+      this.killCourseForm.courseName = rowData.name;
+      this.killCourseForm.coursePic = rowData.pic;
+      this.killCourseForm.teacherNames = rowData.teacherNames;
+      this.killCourseForm.killCount = "";
+      this.killCourseForm.killPrice = "";
+      this.killCourseForm.activityId = "";
+      this.killCourseFormVisible = true;
+    },
+    addKillCourseSubmit(){
+      this.$http.post("/kill/killCourse/save",this.killCourseForm).then(res=>{
+        var ajaxResult = res.data;
+        if(ajaxResult.success){
+          this.$message({
+            message: '加入秒杀成功,请在秒杀中心查看!',
+            type: 'success'
+          });
+          this.killCourseFormVisible = false;
+          //this.getCourses();
+        }else{
+          this.$message({ message: ajaxResult.message,type: 'error'});
+        }
+      }).catch(error=>{
+        this.$message({ message: '保存失败!',type: 'error'});
+      })
+    }
   },
 
   mounted() {
@@ -596,6 +689,7 @@ export default {
     //this.getGrades();
     this.getCourseTypes();
     this.getTeachers();
+    this.getKillActivitys();
   }
 }
 

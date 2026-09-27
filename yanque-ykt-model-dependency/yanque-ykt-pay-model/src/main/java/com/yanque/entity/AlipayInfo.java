@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * 支付宝参数信息业务层模型实体类
  *
- * @author x1angwan
+ * @author cr
  */
 @Data
 @Builder

@@ -21,7 +21,7 @@ public class Knife4jConfiguration {
     public GroupedOpenApi systemApi() {
         return GroupedOpenApi.builder()
                 .group("秒杀服务")        // 分组名称
-                .pathsToMatch("/seckill/**") // 分组默认访问前缀
+                .pathsToMatch("/kill/**") // 分组默认访问前缀
                 .build();
     }
 

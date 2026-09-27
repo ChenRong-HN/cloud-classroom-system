@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 /**
  * 订单详情业务层接口
  *
- * @author x1angwan
+ * @author cr
  */
 public interface ICourseOrderItemService extends IService<CourseOrderItem> {
 

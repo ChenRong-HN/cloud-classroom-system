@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 /**
  * 支付流水业务层模型实体类
  *
- * @author x1angwan
+ * @author cr
  */
 @Data
 @Builder

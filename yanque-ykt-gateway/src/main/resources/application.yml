@@ -75,6 +75,6 @@ spring:
         - id: yanque-ykt-seckill-service # 路由规则名称
           uri: lb://yanque-ykt-seckill-service # 转发目标
           predicates:
-            - Path=/ykt/seckill/** # 路由匹配规则
+            - Path=/ykt/kill/** # 路由匹配规则
           filters:
             - StripPrefix=1 # 默认将访问路径中的第一部分截取,只保留后续部分进行转发

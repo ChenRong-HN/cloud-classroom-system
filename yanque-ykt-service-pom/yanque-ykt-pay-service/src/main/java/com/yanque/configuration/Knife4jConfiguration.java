@@ -35,6 +35,6 @@ public class Knife4jConfiguration {
                         .title("燕雀云课堂 - 支付服务API")   // 文档标题
                         .version("1.0.0")                       // 文档版本
                         .description("燕雀教育云课堂支付服务接口文档") // 文档描述
-                        .contact(new Contact().name("x1angwan"))); // 联系人信息
+                        .contact(new Contact().name("cr"))); // 联系人信息
     }
 }

@@ -44,7 +44,13 @@ public enum BusinessErrorType {
     PAY_TYPE_ERROR(531, "不支持的支付方式错误"),
     PAY_ORDER_NOT_FOUND(532, "支付订单不存在"),
     PAY_STATUS_ERROR(533, "支付订单状态错误"),
-    COURSE_ORDER_NOT_FOUND(534, "课程订单数据不存在");
+    COURSE_ORDER_NOT_FOUND(534, "课程订单数据不存在"),
+    KILL_ACTIVITY_EXISTS(535, "秒杀活动数据已存在"),
+    KILL_ACTIVITY_TIME_ERROR(536, "秒杀活动时间错误"),
+    KILL_ACTIVITY_NOT_EXISTS(537, "秒杀活动数据不存在"),
+    KILL_ACTIVITY_STATUS_ERROR(538, "秒杀活动状态错误"),
+    KILL_ACTIVITY_COURSE_NOT_EXISTS(539, "秒杀活动不包含任何秒杀课程"),
+    KILL_ACTIVITY_PUBLISH_ERROR(540, "秒杀活动发布错误");;
 
     // 状态码
     private final Integer code;

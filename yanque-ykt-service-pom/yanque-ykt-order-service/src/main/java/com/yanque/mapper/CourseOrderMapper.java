@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * 订单持久层接口
  *
- * @author x1angwan
+ * @author cr
  */
 @Mapper
 public interface CourseOrderMapper extends BaseMapper<CourseOrder> {

@@ -22,6 +22,8 @@ import EmailMessage from './views/cjc/EmailMessage'
 import Employee from './views/cjc/Employee'
 import Table from './views/cjc/Table'
 import Permission from './views/cjc/Permission'
+import KillActivity from "@/views/cjc/KillActivity.vue";
+import CourseKill from '@/views/cjc/CourseKill.vue'
 
 
 let routes = [
@@ -129,6 +131,17 @@ let routes = [
         children: [
             { path: '/pager', component: Pager, name: '静态化页面管理' },
             { path: '/site', component: Pager, name: '站点管理' }
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '秒杀活动',
+        iconCls: 'el-icon-s-order',
+        children: [
+            {path: '/killActivity', component: KillActivity, name: '秒杀活动'},
+            {path: '/courseKill', component: CourseKill, name: '秒杀课程'},
+
         ]
     },
 

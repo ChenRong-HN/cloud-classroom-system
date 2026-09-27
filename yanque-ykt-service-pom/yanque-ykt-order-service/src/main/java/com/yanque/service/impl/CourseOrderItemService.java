@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 /**
  * 订单详情业务层接口实现类
  *
- * @author x1angwan
+ * @author cr
  */
 @Service
 public class CourseOrderItemService extends ServiceImpl<CourseOrderItemMapper,CourseOrderItem> implements ICourseOrderItemService {

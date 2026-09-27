@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * 秒杀活动信息持久层接口
  *
- * @author x1angwan
+ * @author cr
  */
 @Mapper
 public interface KillActivityMapper extends BaseMapper<KillActivity> {

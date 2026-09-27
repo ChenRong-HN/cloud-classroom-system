@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * 秒杀课程信息持久层接口
  *
- * @author x1angwan
+ * @author cr
  */
 @Mapper
 public interface KillCourseMapper extends BaseMapper<KillCourse> {

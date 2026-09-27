@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 /**
  * 秒杀课程信息业务层模型实体类
  *
- * @author x1angwan
+ * @author cr
  */
 @Data
 @Builder
