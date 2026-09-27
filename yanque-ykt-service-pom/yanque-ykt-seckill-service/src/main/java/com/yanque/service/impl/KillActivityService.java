@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yanque.common.constant.PageConstant;
 import com.yanque.common.constant.PublishStatusConstant;
 import com.yanque.common.constant.RedisConstant;
 import com.yanque.common.vo.ApiPageResponse;
@@ -55,6 +56,8 @@ public class KillActivityService extends ServiceImpl<KillActivityMapper, KillAct
 
     @Override
     public ApiPageResponse<KillActivity> pagelist(BasicPageVo basicPageVo) {
+        if (ObjUtil.isNull(basicPageVo.getRows()))
+            basicPageVo.setRows(PageConstant.DEFAULT_PAGE_DATA_COUNT);
         // 封装分页条件
         Page<KillActivity> page = new Page<>(basicPageVo.getPage(), basicPageVo.getRows());
         // 封装查询条件
@@ -115,7 +118,7 @@ public class KillActivityService extends ServiceImpl<KillActivityMapper, KillAct
         // 完成课程库存在缓存中的预热
         ArrayList<String> alreadyExistSemaphoreKeyList = new ArrayList<>();
         for (KillCourse killCourse : killCourseList) {
-            String killCourseStockSemaphoreKey = String.format(RedisConstant.KILL_ACTIVITY_COURSE_STOCK_SEMAPHORE_KEY, killActivity, killCourse.getCourseId());
+            String killCourseStockSemaphoreKey = String.format(RedisConstant.KILL_ACTIVITY_COURSE_STOCK_SEMAPHORE_KEY, killActivityId, killCourse.getCourseId());
             RSemaphore semaphore = redissonClient.getSemaphore(killCourseStockSemaphoreKey);
             // 设置许可证数量
             boolean r = semaphore.trySetPermits(Integer.parseInt(String.valueOf(killCourse.getKillCount())));

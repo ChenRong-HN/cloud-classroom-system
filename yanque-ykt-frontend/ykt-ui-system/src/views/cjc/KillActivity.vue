@@ -112,7 +112,7 @@ export default {
       addLoading: false,
       addFormRules: {
         name: [
-          {required: true, message: '请输入姓名', trigger: 'blur'}
+          {required: true, message: '请输入活动名称', trigger: 'blur'}
         ]
       },
       //新增界面数据

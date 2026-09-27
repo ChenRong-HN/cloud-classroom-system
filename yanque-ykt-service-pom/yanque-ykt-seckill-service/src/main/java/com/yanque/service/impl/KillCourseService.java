@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yanque.common.constant.PageConstant;
 import com.yanque.common.constant.PublishStatusConstant;
 import com.yanque.common.constant.SeckillConstant;
 import com.yanque.common.vo.ApiPageResponse;
@@ -41,6 +43,8 @@ public class KillCourseService extends ServiceImpl<KillCourseMapper, KillCourse>
 
     @Override
     public ApiPageResponse<KillCourse> pagelist(BasicPageVo basicPageVo) {
+        if (ObjUtil.isNull(basicPageVo.getRows()))
+            basicPageVo.setRows(PageConstant.DEFAULT_PAGE_DATA_COUNT);
         // 封装分页条件
         Page<KillCourse> page = new Page<>(basicPageVo.getPage(), basicPageVo.getRows());
         // 封装查询条件
