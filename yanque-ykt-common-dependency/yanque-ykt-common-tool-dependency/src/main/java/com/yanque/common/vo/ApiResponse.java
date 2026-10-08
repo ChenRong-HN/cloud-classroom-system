@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 全局通用返回结果Vo类
  *
- * @author x1angw@N
+ * @author cr
  */
 @Data
 public class ApiResponse<T> {

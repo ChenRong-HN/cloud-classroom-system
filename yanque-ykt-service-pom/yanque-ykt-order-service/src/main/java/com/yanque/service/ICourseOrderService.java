@@ -3,7 +3,9 @@ package com.yanque.service;
 import com.yanque.entity.CourseOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yanque.entity.vo.CourseOrderConfirmItemRespVo;
+import com.yanque.entity.vo.CourseOrderConfirmRespVo;
 import com.yanque.entity.vo.PlaceOrderReqVo;
+import com.yanque.entity.vo.PlaceSeckillOrderReqVo;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -29,4 +31,8 @@ public interface ICourseOrderService extends IService<CourseOrder> {
      * @param courseOrderConfirmItemRespVoList 订单项确认集合
      */
     void saveOrderAndOrderItem(CourseOrder courseOrder, List<CourseOrderConfirmItemRespVo> courseOrderConfirmItemRespVoList);
+
+    CourseOrderConfirmRespVo killOrderConfirm(String orderNo);
+
+    String placeSeckillOrder(PlaceSeckillOrderReqVo placeSeckillOrderReqVo);
 }

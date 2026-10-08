@@ -5,6 +5,8 @@ import java.util.List;
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
 import com.yanque.common.vo.BasicPageVo;
+import com.yanque.entity.vo.KillCourseRespVo;
+import com.yanque.entity.vo.KillReqVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -104,9 +106,40 @@ public class KillCourseController {
         return ApiResponse.success();
     }
 
+    /**
+     * 分页查询秒杀课程信息
+     *
+     * @param basicPageVo 分页查询参数
+     * @return 全局通用返回结果(秒杀课程信息分页数据)
+     */
+    @Operation(summary = "分页查询秒杀课程信息", description = "分页查询秒杀课程信息信息")
     @PostMapping("/pagelist")
     public ApiResponse<ApiPageResponse<KillCourse>> pagelist(@RequestBody BasicPageVo basicPageVo) {
         // 调用秒杀课程信息服务层接口分页查询秒杀课程信息
         return ApiResponse.success(killCourseService.pagelist(basicPageVo));
+    }
+
+    /**
+     * 获取秒杀课程在线状态（含倒计时）
+     *
+     * @param killCourseId 秒杀课程信息主键Id
+     * @return 全局通用返回结果(秒杀课程信息实体数据)
+     */
+    @Operation(summary = "获取秒杀课程在线状态（含倒计时）", description = "根据主键Id获取秒杀课程信息在线状态（含倒计时）")
+    @GetMapping("/online/one/{killCourseId}")
+    public ApiResponse<KillCourseRespVo> selectKillCourseRespVo(@PathVariable Long killCourseId){
+        return ApiResponse.success(killCourseService.selectKillCourseRespVo(killCourseId));
+    }
+
+    /**
+     * 提交秒杀请求(不代表提交订单、尝试获取秒杀的资格)
+     *
+     * @param killReqVo 秒杀课程信息实体对象
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "提交秒杀请求(不代表提交订单、尝试获取秒杀的资格)", description = "提交秒杀课程信息信息")
+    @PostMapping("/kill")
+    public ApiResponse<String> killCourse(@Valid @RequestBody KillReqVo killReqVo){
+        return ApiResponse.success(killCourseService.killCourse(killReqVo));
     }
 }

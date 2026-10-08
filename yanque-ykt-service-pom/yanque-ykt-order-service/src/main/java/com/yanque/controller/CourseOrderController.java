@@ -3,7 +3,9 @@ package com.yanque.controller;
 import java.util.List;
 
 import com.yanque.common.vo.ApiResponse;
+import com.yanque.entity.vo.CourseOrderConfirmRespVo;
 import com.yanque.entity.vo.PlaceOrderReqVo;
+import com.yanque.entity.vo.PlaceSeckillOrderReqVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -114,5 +116,31 @@ public class CourseOrderController {
     public ApiResponse<String> placeOrder(@Valid @RequestBody PlaceOrderReqVo placeOrderReqVo) {
         String orderNo = courseOrderService.placeOrder(placeOrderReqVo);
         return ApiResponse.success(orderNo);
+    }
+
+    /**
+     * 确认秒杀订单课程信息
+     *
+     * @param orderNo 订单编号
+     * @return 全局通用返回结果(课程信息实体数据[秒杀价格])
+     */
+    @Operation(summary = "确认秒杀订单课程信息", description = "确认秒杀订单课程信息")
+    @GetMapping("/killOrderConfirm/{orderNo}")
+    public ApiResponse<CourseOrderConfirmRespVo> killOrderConfirm(@PathVariable String orderNo) {
+        // 调用服务层确认订单查询课程信息
+        return ApiResponse.success(courseOrderService.killOrderConfirm(orderNo));
+    }
+
+    /**
+     * 提交秒杀订单
+     *
+     * @param placeSeckillOrderReqVo 秒杀订单提交信息
+     * @return 全局通用返回结果(订单编号)
+     */
+    @Operation(summary = "提交秒杀订单", description = "提交秒杀订单")
+    @PostMapping("/killPlaceOrder")
+    public ApiResponse<String> placeSeckillOrder(@RequestBody PlaceSeckillOrderReqVo placeSeckillOrderReqVo) {
+        // 调用服务层保存秒杀订单信息
+        return ApiResponse.success(courseOrderService.placeSeckillOrder(placeSeckillOrderReqVo));
     }
 }

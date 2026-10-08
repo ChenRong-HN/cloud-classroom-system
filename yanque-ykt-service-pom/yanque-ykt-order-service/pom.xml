@@ -24,6 +24,12 @@
             <artifactId>yanque-ykt-order-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- 秒杀服务模型依赖 -->
+        <dependency>
+            <groupId>com.yanque</groupId>
+            <artifactId>yanque-ykt-seckill-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- SpringBoot单元测试依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -5,6 +5,7 @@ import java.util.List;
 import com.yanque.common.vo.ApiPageResponse;
 import com.yanque.common.vo.ApiResponse;
 import com.yanque.common.vo.BasicPageVo;
+import com.yanque.entity.KillCourse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,7 +42,7 @@ public class KillActivityController {
      * @return 全局通用返回结果(秒杀活动信息所有数据})
      */
     @Operation(summary = "查询秒杀活动信息列表", description = "查询所有秒杀活动信息信息列表")
-    @GetMapping("/list" )
+    @GetMapping("/list")
     public ApiResponse<List<KillActivity>> list() {
         // 调用秒杀活动信息服务层接口查询所有秒杀活动信息信息
         List<KillActivity> list = killActivityService.list();
@@ -55,7 +56,7 @@ public class KillActivityController {
      * @return 全局通用返回结果(秒杀活动信息实体数据)
      */
     @Operation(summary = "根据Id查询秒杀活动信息", description = "根据主键Id查询秒杀活动信息详细信息")
-    @GetMapping("/{id}" )
+    @GetMapping("/{id}")
     public ApiResponse<KillActivity> getById(@Parameter(description = "秒杀活动信息Id") @PathVariable("id") Long id) {
         // 调用秒杀活动信息服务层接口根据Id查询秒杀活动信息信息
         KillActivity entity = killActivityService.getById(id);
@@ -97,22 +98,60 @@ public class KillActivityController {
      * @return 全局通用返回结果
      */
     @Operation(summary = "删除秒杀活动信息", description = "根据Id删除秒杀活动信息信息")
-    @DeleteMapping("/{id}" )
+    @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@Parameter(description = "秒杀活动信息Id") @PathVariable("id") Long id) {
         // 调用秒杀活动信息服务层接口根据Id删除秒杀活动信息信息
         killActivityService.removeById(id);
         return ApiResponse.success();
     }
 
+    /**
+     * 分页查询秒杀活动信息
+     *
+     * @param basicPageVo 分页查询参数
+     * @return 全局通用返回结果(秒杀活动信息实体数据)
+     */
+    @Operation(summary = "分页查询", description = "分页查询")
     @PostMapping("/pagelist")
-    public ApiResponse<ApiPageResponse<KillActivity>> selectPage(@RequestBody BasicPageVo basicPageVo){
+    public ApiResponse<ApiPageResponse<KillActivity>> selectPage(@RequestBody BasicPageVo basicPageVo) {
         // 调用秒杀活动信息服务层接口分页查询秒杀活动信息
         return ApiResponse.success(killActivityService.pagelist(basicPageVo));
     }
 
+    /**
+     * 发布秒杀活动
+     *
+     * @param killActivityId 秒杀活动主键Id
+     * @return 全局通用返回结果
+     */
+    @Operation(summary = "发布秒杀活动", description = "发布秒杀活动信息")
     @PostMapping("/publish/{killActivityId}")
-    public ApiResponse<Void> publish(@PathVariable Long killActivityId){
+    public ApiResponse<Void> publish(@PathVariable Long killActivityId) {
         killActivityService.publish(killActivityId);
         return ApiResponse.success();
+    }
+
+    /**
+     * 根据状态查询
+     *
+     * @param publishStatus 发布状态
+     * @return 全局通用返回结果(秒杀活动信息实体数据列表)
+     */
+    @Operation(summary = "根据状态查询", description = "根据状态查询")
+    @GetMapping("/getByStatus/{publishStatus}")
+    public ApiResponse<List<KillActivity>> getByStatus(@PathVariable Long publishStatus) {
+        return ApiResponse.success(killActivityService.getByStatus(publishStatus));
+    }
+
+    /**
+     * 根据活动Id查询秒杀课程
+     *
+     * @param activityId 活动Id
+     * @return 全局通用返回结果(秒杀课程信息实体数据列表)
+     */
+    @Operation(summary = "根据活动Id查询秒杀课程", description = "根据活动Id查询秒杀课程信息")
+    @GetMapping("/getByActivityId/{activityId}")
+    public ApiResponse<List<KillCourse>> getByActivityId(@PathVariable Long activityId) {
+        return ApiResponse.success(killActivityService.getByActivityId(activityId));
     }
 }

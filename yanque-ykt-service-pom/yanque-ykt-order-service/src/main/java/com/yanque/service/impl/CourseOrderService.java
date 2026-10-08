@@ -9,12 +9,12 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONUtil;
+import com.yanque.common.constant.PayStatusConstant;
 import com.yanque.common.constant.RedisConstant;
 import com.yanque.common.constant.RocketMQConstant;
+import com.yanque.common.vo.ApiResponse;
 import com.yanque.entity.CourseOrderItem;
-import com.yanque.entity.vo.CourseOrderConfirmItemRespVo;
-import com.yanque.entity.vo.CourseOrderConfirmRespVo;
-import com.yanque.entity.vo.PlaceOrderReqVo;
+import com.yanque.entity.vo.*;
 import com.yanque.exp.BusinessErrorType;
 import com.yanque.exp.BusinessException;
 import com.yanque.feign.client.CourseFeignClient;
@@ -141,5 +141,102 @@ public class CourseOrderService extends ServiceImpl<CourseOrderMapper, CourseOrd
         }).toList();
         // 批量保存订单详情数据
         courseOrderItemService.saveBatch(courseOrderItemList);
+    }
+
+    @Override
+    public CourseOrderConfirmRespVo killOrderConfirm(String orderNo) {
+        // 声明模拟用户
+        Long userId = 5L;
+
+        // 从redis中获取预订单信息
+        String preOrderKey = String.format(RedisConstant.PRE_SECKILL_ORDER,userId,orderNo);
+        String preOrderJson = redisTemplate.opsForValue().get(preOrderKey);
+
+        // 检查订单是否存在
+        Assert.notNull(preOrderJson, () -> new BusinessException(BusinessErrorType.KILL_ORDER_CONFIRM_ERROR));
+
+        // 解析预订单
+        PreSeckillOrderVo preSeckillOrderVo = JSONUtil.toBean(preOrderJson, PreSeckillOrderVo.class);
+
+        // 获取原始课程Id
+        Long originCourseId = preSeckillOrderVo.getOriginCourseId();
+        ApiResponse<CourseOrderConfirmRespVo> courseOrderConfirmRespVoApiResponse = courseFeignClient.orderConfirm(List.of(originCourseId));
+        CourseOrderConfirmRespVo courseOrderConfirmRespVo = courseOrderConfirmRespVoApiResponse.getData();
+
+        // 修改原始课程数据中的总金额为秒杀金额
+        courseOrderConfirmRespVo.setTotalAmount(preSeckillOrderVo.getKillPrice());
+
+        return courseOrderConfirmRespVo;
+    }
+
+    /**
+     * 提交秒杀订单
+     *
+     * @param placeSeckillOrderReqVo 秒杀订单信息
+     * @return 订单编号
+     */
+    @Override
+    public String placeSeckillOrder(PlaceSeckillOrderReqVo placeSeckillOrderReqVo) {
+        // 校验1:防止重复提交删除令牌(删除成功✅️继续创建订单、删除失败❌️ 之前已经有请求删除过令牌了、结束执行)
+        Long userId = 5L;
+        String redisTokenKey = RedisConstant.ORDER_CONFIRM_TOKEN_KEY.concat(userId.toString()).concat(":").concat(placeSeckillOrderReqVo.getToken());
+        Boolean deleteR = redisTemplate.delete(redisTokenKey);
+        Assert.isTrue(deleteR, () -> new BusinessException(BusinessErrorType.ORDER_REPEAT_SUBMIT));
+
+        // 去Redis中查询指定Id用户之前保存的预订单信息
+        String preOrderKey = String.format(RedisConstant.PRE_SECKILL_ORDER, userId, placeSeckillOrderReqVo.getOrderNo());
+        Object value = redisTemplate.opsForValue().get(preOrderKey);
+        Assert.notNull(value, () -> new BusinessException(BusinessErrorType.KILL_ORDER_CONFIRM_ERROR));
+        PreSeckillOrderVo preSeckillOrderVo = JSONUtil.toBean(value.toString(), PreSeckillOrderVo.class);
+
+        // 基于秒杀信息中的原始课程Id查询原始课程数据
+        ApiResponse<CourseOrderConfirmRespVo> courseOrderConfirmRespVoApiResponse = courseFeignClient.orderConfirm(List.of(preSeckillOrderVo.getOriginCourseId()));
+        CourseOrderConfirmRespVo courseOrderConfirmRespVo = courseOrderConfirmRespVoApiResponse.getData();
+
+        // 封装订单信息
+        StringBuilder orderTitle = new StringBuilder("用户 ").append(userId).append(" 购买 ");
+        String courseName = courseOrderConfirmRespVo.getItems().get(0).getCourse().getName();
+        orderTitle.append("[").append(courseName).append("] 课程");
+
+        // 订单表基础信息
+        CourseOrder courseOrder = CourseOrder.builder()
+                .createTime(LocalDateTime.now()) // 订单创建时间
+                .orderNo(placeSeckillOrderReqVo.getOrderNo()) // 订单编号
+                .totalAmount(preSeckillOrderVo.getKillPrice().multiply(BigDecimal.valueOf(preSeckillOrderVo.getQuantity()))) // 订单总金额
+                .totalCount(preSeckillOrderVo.getQuantity()) // 购买件数
+                .statusOrder(PayStatusConstant.UNPAY) // 订单状态
+                .userId(userId) // 下单用户Id
+                .payType(placeSeckillOrderReqVo.getPayType())
+                .title(orderTitle.toString()) // 订单标题
+                .build();
+
+        // 封装Message消息对象
+        HashMap<String, Object> messageMap = new HashMap<>();
+        messageMap.put("amount", courseOrder.getTotalAmount()); // 订单支付金额
+        messageMap.put("orderNo", placeSeckillOrderReqVo.getOrderNo()); // 订单编号
+        messageMap.put("userId", userId); // 订单用户Id
+        messageMap.put("subject", courseOrder.getTitle()); // 订单标题
+        Message<String> message = MessageBuilder.withPayload(JSONUtil.toJsonStr(messageMap)).build();
+
+        // 封装向事务消息监听器发送的数据
+        HashMap<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("courseOrder", courseOrder);
+        parameterMap.put("courseOrderConfirmItemRespVoList", courseOrderConfirmRespVo.getItems());
+
+        // 📌 发送事务消息
+        rocketMQTemplate.sendMessageInTransaction(RocketMQConstant.buildDestination(RocketMQConstant.ORDER_PAY_TOPIC, RocketMQConstant.ORDER_PAY_TAG),
+                message, parameterMap);
+        log.warn("订单编号 {} 的事务已发送", placeSeckillOrderReqVo.getOrderNo());
+
+        // 📌 发送延迟消息 目标主题:order_status_topic 标签:cancel 延迟级别:16->30分钟 5->1分钟
+        Message<String> delayMessage = MessageBuilder.withPayload(placeSeckillOrderReqVo.getOrderNo()).build();
+        SendResult sendResult = rocketMQTemplate.syncSend(RocketMQConstant.buildDestination(RocketMQConstant.ORDER_STATUS_TOPIC, RocketMQConstant.ORDER_STATUS_CANCEL_TAG), delayMessage, 10000, 16);
+        log.warn("订单编号 {} 的延迟消息已发送,发送结果 {}", placeSeckillOrderReqVo.getOrderNo(), sendResult.getSendStatus());
+
+        log.warn("订单创建成功、订单的主键Id {} 订单编号 {}", courseOrder.getId(), courseOrder.getOrderNo());
+
+        // 删除掉用户的分布式锁
+        redisTemplate.delete(String.format(RedisConstant.USER_KILL_KEY, preSeckillOrderVo.getActivityId(), preSeckillOrderVo.getKillCourseId(), userId));
+        return placeSeckillOrderReqVo.getOrderNo();
     }
 }

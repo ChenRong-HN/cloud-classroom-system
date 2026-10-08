@@ -146,4 +146,39 @@ public class KillActivityService extends ServiceImpl<KillActivityMapper, KillAct
             alreadyExistSemaphoreKeyList.add(killCourseStockSemaphoreKey);
         }
     }
+
+    @Override
+    public List<KillActivity> getByStatus(Long publishStatus) {
+        // 从redis中获取秒杀活动信息
+        List<Object> seckillActivityListJson = redisTemplate.opsForHash().values(RedisConstant.KILL_ACTIVITY_KEY);
+        // 如果redis中没有数据，则从数据库中获取
+        if (ObjUtil.isEmpty(seckillActivityListJson)) {
+            // 从数据库中获取秒杀活动信息并且缓存到redis中
+            List<KillActivity> killActivityList = list(Wrappers.<KillActivity>lambdaQuery().eq(KillActivity::getPublishStatus, publishStatus));
+            Assert.isTrue(ObjUtil.isNotEmpty(killActivityList), () -> new BusinessException(BusinessErrorType.KILL_ACTIVITY_NOT_EXISTS));
+            killActivityList.forEach(killActivity -> redisTemplate.opsForHash().put(RedisConstant.KILL_ACTIVITY_KEY, killActivity.getId().toString(), JSONUtil.toJsonStr(killActivity)));
+            return killActivityList;
+        }
+        return seckillActivityListJson
+                .stream()
+                .map(seckillActivityJson -> JSONUtil.toBean(seckillActivityJson.toString(), KillActivity.class))
+                .toList();
+    }
+
+    @Override
+    public List<KillCourse> getByActivityId(Long activityId) {
+        String killActivityCourseKey = RedisConstant.KILL_ACTIVITY_COURSE_KEY.concat(activityId.toString());
+        List<Object> killCourseListJson = redisTemplate.opsForHash().values(killActivityCourseKey);
+        if (ObjUtil.isEmpty(killCourseListJson)) {
+            // 从数据库中获取秒杀课程信息并且缓存到redis中
+            List<KillCourse> killCourseList = killCourseService.list(Wrappers.<KillCourse>lambdaQuery().eq(KillCourse::getActivityId, activityId));
+            Assert.isTrue(ObjUtil.isNotEmpty(killCourseList), () -> new BusinessException(BusinessErrorType.KILL_ACTIVITY_COURSE_NOT_EXISTS));
+            killCourseList.forEach(killCourse -> redisTemplate.opsForHash().put(killActivityCourseKey, killCourse.getCourseId().toString(), JSONUtil.toJsonStr(killCourse)));
+            return killCourseList;
+        }
+        return killCourseListJson
+                .stream()
+                .map(killCourseJson -> JSONUtil.toBean(killCourseJson.toString(), KillCourse.class))
+                .toList();
+    }
 }

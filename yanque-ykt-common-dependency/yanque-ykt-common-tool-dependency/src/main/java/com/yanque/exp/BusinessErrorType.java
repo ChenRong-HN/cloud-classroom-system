@@ -50,7 +50,15 @@ public enum BusinessErrorType {
     KILL_ACTIVITY_NOT_EXISTS(537, "秒杀活动数据不存在"),
     KILL_ACTIVITY_STATUS_ERROR(538, "秒杀活动状态错误"),
     KILL_ACTIVITY_COURSE_NOT_EXISTS(539, "秒杀活动不包含任何秒杀课程"),
-    KILL_ACTIVITY_PUBLISH_ERROR(540, "秒杀活动发布错误");;
+    KILL_ACTIVITY_PUBLISH_ERROR(540, "秒杀活动发布错误"),
+    KILL_COURSE_NOT_EXISTS(541, "秒杀课程数据不存在"),
+    KILL_ACTIVITY_NOT_MATCH(542, "秒杀课程与秒杀活动不匹配"),
+    KILL_COURSE_NOT_START_ERROR(543, "秒杀课程尚未开始"),
+    KILL_COURSE_HAS_END_ERROR(544, "秒杀课程已结束"),
+    KILL_COURSE_REPEAT_SUBMIT_ERROR(545, "用户秒杀课程重复提交"),
+    KILL_COURSE_STOCK_ERROR(546, "秒杀课程库存不足"),
+    KILL_ORDER_CONFIRM_ERROR(547, "预订单超时"),
+    KILL_COURSE_ERROR(548, "秒杀课程失败，请稍后重试");
 
     // 状态码
     private final Integer code;

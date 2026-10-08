@@ -29,6 +29,10 @@ public final class RedisConstant {
     public static final String KILL_ACTIVITY_COURSE_KEY = "seckill:activity:";
     // 秒杀课程库存信号量Key（预留了两个占位符）
     public static final String KILL_ACTIVITY_COURSE_STOCK_SEMAPHORE_KEY = "seckill:semaphore:activity:%s:course:%s";
+    // 用户秒杀的分布式锁Key（预留了三个占位符：秒杀活动ID、秒杀课程ID、用户ID）
+    public static final String USER_KILL_KEY = "seckill:user:lock:%s:%s:%s";
+    // 预秒杀订单Key（预留了两个占位符：秒杀活动ID、秒杀课程ID）
+    public static final String PRE_SECKILL_ORDER = "pre:kill:order:%s:%s";
 
     // value
     public static final Integer MAIL_REGISTRY_CODE_DEFAULT_EXPIRE_MINUTES_VALUE = 5;
